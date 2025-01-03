@@ -2,6 +2,7 @@ import React from 'react'
 import { createRoot } from "react-dom/client"
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import ContextProvider from './context/ContextProvider'
+import './style.scss'
 import Root from './pages/Root'
 import ErrorPage from './pages/ErrorPage'
 import Home from './pages/Home'

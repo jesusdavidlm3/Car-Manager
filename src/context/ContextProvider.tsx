@@ -2,14 +2,12 @@ import { appContext } from "./appContext"
 import React from 'react'
 import { useState } from "react"
 
-const ContextProvider = () => {
+const ContextProvider = ({children}) => {
 
 
     return(
-        <appContext.Provider value={{
-            
-        }}>
-
+        <appContext.Provider>
+            {children}
         </appContext.Provider>
     )
 }
