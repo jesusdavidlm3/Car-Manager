@@ -9,10 +9,11 @@ body{
 }
 
 @mixin pageBasicConfig{
-    height: calc(100vh - 70px);
-    width: 100vw;
+    height: calc(100vh - 70px - 40px);
+    width: calc(100vw - 40px);
     display: flex;
     overflow: scroll;
+    padding: 20px;
 }
 
 .NavBar{
@@ -42,5 +43,35 @@ body{
     h2{
         font-size: 20px;
         margin: 0;
+    }
+}
+
+.Regs{
+    @include pageBasicConfig;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.Actives{
+    @include pageBasicConfig;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .listItem{
+        background-color: var(--moduleColor);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0px 15px;
+        width: calc(100% - 30px);
+
+        .Buttons{
+            display: flex;
+            flex-direction: row;
+            gap: 5px;
+        }
     }
 }

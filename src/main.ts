@@ -24,8 +24,12 @@ const createWindow = () => {
     mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
   }
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  
+  // mainWindow.webContents.openDevTools(); // Open the DevTools.
+  mainWindow.setMenuBarVisibility(false);
+  mainWindow.maximize();
+  // mainWindow.setResizable(false);
+  // mainWindow.setFullScreen(true);
 };
 
 // This method will be called when Electron has finished

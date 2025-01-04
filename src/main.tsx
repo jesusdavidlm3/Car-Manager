@@ -6,6 +6,8 @@ import './style.scss'
 import Root from './pages/Root'
 import ErrorPage from './pages/ErrorPage'
 import Home from './pages/Home'
+import Regs from './pages/Regs'
+import Actives from './pages/Actives'
 
 const router = createBrowserRouter([{
     path: '/',
@@ -14,6 +16,12 @@ const router = createBrowserRouter([{
     children: [{
         path: '/home',
         element: <Home/>
+    },{
+        path: '/regs',
+        element: <Regs/>
+    },{
+        path: '/actives',
+        element: <Actives/>
     }]
 }])
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import logo from '../img/logo.jpg'
 
-const Home = () => {
+const Home: React.FC = () => {
     return(
         <div className='Home'>
             <img src={logo} className='logo'/>

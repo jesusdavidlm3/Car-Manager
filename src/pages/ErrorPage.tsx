@@ -2,7 +2,7 @@ import React from 'react'
 import { WarningOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 
-const ErrorPage = () => {
+const ErrorPage: React.FC = () => {
 
     const navigate = useNavigate()
 
