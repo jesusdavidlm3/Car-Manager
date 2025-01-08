@@ -2,11 +2,18 @@ import { appContext } from "./appContext"
 import React from 'react'
 import { useState } from "react"
 
-const ContextProvider = ({children}) => {
+interface contextProviderInterface{
+    children: React.ReactNode
+}
 
+const ContextProvider: React.FC<contextProviderInterface> = ({children}) => {
 
     return(
-        <appContext.Provider>
+        <appContext.Provider
+            value={{
+                
+            }}
+        >
             {children}
         </appContext.Provider>
     )

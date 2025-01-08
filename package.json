@@ -1,8 +1,8 @@
 {
-  "name": "my-new-app",
-  "productName": "my-new-app",
-  "version": "1.0.0",
-  "description": "My Electron application description",
+  "name": "car-manager",
+  "productName": "car-manager",
+  "version": "0.0.1",
+  "description": "Car Manager",
   "main": ".vite/build/main.js",
   "scripts": {
     "start": "electron-forge start",
@@ -45,7 +45,6 @@
     "pdfkit": "^0.16.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^7.1.1",
     "sass": "^1.83.0",
     "sqlite3": "^5.1.7",
     "uuid": "^11.0.3"

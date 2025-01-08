@@ -1,19 +1,19 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Button } from 'antd'
 import { NewCheckin } from './Modals'
-import { useNavigate } from 'react-router-dom'
+import { routerContext } from '../context/routerContext'
 
 const NavBar: React.FC = () => {
 
-    const navigate = useNavigate()
     const [newCheckinModal, setNewCheckinModal] = useState(false)
+    const {setView} = useContext(routerContext)
 
     return(
         <>
             <div className='NavBar'>
                 <Button variant='solid' color='primary' onClick={() => setNewCheckinModal(true)}>Registrar ingreso</Button>
-                <Button variant='solid' color='primary' onClick={() => navigate('/actives')}>Activos</Button>
-                <Button variant='solid' color='primary' onClick={() => navigate('/regs')}>Registros</Button>
+                <Button variant='solid' color='primary' onClick={() => setView('Actives')}>Activos</Button>
+                <Button variant='solid' color='primary' onClick={() => setView('Regs')}>Registros</Button>
                 <Button variant='solid' color='primary'>Administrar</Button>
             </div>
 
