@@ -16,6 +16,24 @@ body{
     padding: 20px;
 }
 
+.ErrorPage{
+    @include pageBasicConfig;
+    background-color: tomato;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+
+    h1{
+        margin: 0px;
+    }
+
+    h3{
+        &:hover{cursor: pointer;}
+    }
+}
+
 .NavBar{
     background-color: var(--moduleColor);
     width: 100vw;
