@@ -14,6 +14,7 @@ const createWindow = () => {
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true
     },
   });
 
@@ -25,8 +26,8 @@ const createWindow = () => {
   }
 
   
-  // mainWindow.webContents.openDevTools(); // Open the DevTools.
-  mainWindow.setMenuBarVisibility(false);
+  mainWindow.webContents.openDevTools(); // Open the DevTools.
+  // mainWindow.setMenuBarVisibility(false);
   mainWindow.maximize();
   // mainWindow.setResizable(false);
   // mainWindow.setFullScreen(true);

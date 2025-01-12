@@ -208,20 +208,3 @@ INSERT INTO carModels (id, brandId, name) VALUES
 (121, 8, 'Quest'),
 (122, 8, 'Cube'),
 (123, 8, 'Rogue');
-
--- Insertar modelos de automóviles para Mazda
-INSERT INTO carModels (id, brandId, name) VALUES
-(124, 9, 'Mazda3'),
-(125, 9, 'Mazda6'),
-(126, 9, 'CX-5'),
-(127, 9, 'CX-9'),
-(128, 9, 'MX-5'),
-(129, 9, 'Mazda2'),
-(130, 9, 'CX-30'),
-(131, 9, 'CX-4'),
-(132, 9, 'Protege'),
-(133, 9, 'Millenia'),
-(134, 9, 'Tribute'),
-(135, 9, 'B-Series'),
-(136, 9, 'Premacy'),
-(137, 9, 'RX-8'),

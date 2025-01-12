@@ -1,2 +1,10 @@
-// See the Electron documentation for details on how to use preload scripts:
-// https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
+import { contextBridge } from "electron";
+import * as db from "../db"
+
+const getAllCarBrands = async () => {
+    return await db.getAllCarBrands()
+}
+
+contextBridge.exposeInMainWorld("api", {
+    gerAllCarBrands: getAllCarBrands()
+})
