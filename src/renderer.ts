@@ -28,5 +28,6 @@
 
 import './index.css';
 import './App'
+import './components/Modals'
 
 console.log('👋 This message is being logged by "renderer.ts", included via Vite');

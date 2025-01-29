@@ -5,6 +5,11 @@ const getAllCarBrands = async () => {
     return await db.getAllCarBrands()
 }
 
+const getAllCarModels = async () => {
+    return await db.getAllCarModels()
+}
+
 contextBridge.exposeInMainWorld("api", {
-    gerAllCarBrands: getAllCarBrands()
+    getAllCarBrands: getAllCarBrands(),
+    getAllCarModels: getAllCarModels()
 })

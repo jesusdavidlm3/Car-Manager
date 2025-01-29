@@ -1,6 +1,14 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Modal, Button, Input, Form, Select, DatePicker, InputNumber } from "antd";
 import type { DatePickerProps } from 'antd';
+import { appContext } from '../context/appContext'
+import { carModel, carBrand } from '../context/ContextProvider'
+
+declare global {
+    interface Window {
+        api? : any
+    }
+}
 
 interface GenericModalProps {
     open: boolean,
@@ -15,8 +23,20 @@ interface CheckRegsProps {
 }
 
 export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
+
+    const [selectedBrand, setSelectedBrand] = useState()
+    const [selectedModel, setSelectedModel] = useState()
+
+    const { carBrandsList, carModelsList } = useContext(appContext)
+    const [showListModels, setShowListModels] = useState([])
+
+    const filterModels = (e: string) => {
+        setShowListModels( carModelsList.filter((item:carModel) => item.brand == e))
+    }
+
     return(
         <Modal
+            destroyOnClose
             title="Ingreso al taller"
             onCancel={onCancel}
             open={open}
@@ -30,10 +50,10 @@ export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
                     <Input.Search/>
                 </Form.Item>
                 <Form.Item label="Marca">
-                    <Select/>
+                    <Select options={carBrandsList} onChange={(e) => {setSelectedBrand(e), filterModels(e)}}/>
                 </Form.Item>
                 <Form.Item label="Modelo">
-                    <Select/>
+                    <Select options={showListModels}/>
                 </Form.Item>
                 <Form.Item label='Año'>
                     <DatePicker picker='year'/>

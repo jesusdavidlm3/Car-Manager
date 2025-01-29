@@ -1,5 +1,503 @@
-"use strict";const g=require("electron"),E=require("path"),z=require("child_process"),R=require("tty"),T=require("util"),G=require("fs"),I=require("net");function L(i){return i&&i.__esModule&&Object.prototype.hasOwnProperty.call(i,"default")?i.default:i}var O={exports:{}},b={exports:{}},q={exports:{}},_,A;function J(){if(A)return _;A=1;var i=1e3,e=i*60,c=e*60,f=c*24,p=f*365.25;_=function(r,n){n=n||{};var o=typeof r;if(o==="string"&&r.length>0)return v(r);if(o==="number"&&isNaN(r)===!1)return n.long?m(r):h(r);throw new Error("val is not a non-empty string or a valid number. val="+JSON.stringify(r))};function v(r){if(r=String(r),!(r.length>100)){var n=/^((?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|years?|yrs?|y)?$/i.exec(r);if(n){var o=parseFloat(n[1]),l=(n[2]||"ms").toLowerCase();switch(l){case"years":case"year":case"yrs":case"yr":case"y":return o*p;case"days":case"day":case"d":return o*f;case"hours":case"hour":case"hrs":case"hr":case"h":return o*c;case"minutes":case"minute":case"mins":case"min":case"m":return o*e;case"seconds":case"second":case"secs":case"sec":case"s":return o*i;case"milliseconds":case"millisecond":case"msecs":case"msec":case"ms":return o;default:return}}}}function h(r){return r>=f?Math.round(r/f)+"d":r>=c?Math.round(r/c)+"h":r>=e?Math.round(r/e)+"m":r>=i?Math.round(r/i)+"s":r+"ms"}function m(r){return a(r,f,"day")||a(r,c,"hour")||a(r,e,"minute")||a(r,i,"second")||r+" ms"}function a(r,n,o){if(!(r<n))return r<n*1.5?Math.floor(r/n)+" "+o:Math.ceil(r/n)+" "+o+"s"}return _}var D;function M(){return D||(D=1,function(i,e){e=i.exports=p.debug=p.default=p,e.coerce=a,e.disable=h,e.enable=v,e.enabled=m,e.humanize=J(),e.names=[],e.skips=[],e.formatters={};var c;function f(r){var n=0,o;for(o in r)n=(n<<5)-n+r.charCodeAt(o),n|=0;return e.colors[Math.abs(n)%e.colors.length]}function p(r){function n(){if(n.enabled){var o=n,l=+new Date,s=l-(c||l);o.diff=s,o.prev=c,o.curr=l,c=l;for(var t=new Array(arguments.length),d=0;d<t.length;d++)t[d]=arguments[d];t[0]=e.coerce(t[0]),typeof t[0]!="string"&&t.unshift("%O");var u=0;t[0]=t[0].replace(/%([a-zA-Z%])/g,function(y,N){if(y==="%%")return y;u++;var k=e.formatters[N];if(typeof k=="function"){var P=t[u];y=k.call(o,P),t.splice(u,1),u--}return y}),e.formatArgs.call(o,t);var w=n.log||e.log||console.log.bind(console);w.apply(o,t)}}return n.namespace=r,n.enabled=e.enabled(r),n.useColors=e.useColors(),n.color=f(r),typeof e.init=="function"&&e.init(n),n}function v(r){e.save(r),e.names=[],e.skips=[];for(var n=(typeof r=="string"?r:"").split(/[\s,]+/),o=n.length,l=0;l<o;l++)n[l]&&(r=n[l].replace(/\*/g,".*?"),r[0]==="-"?e.skips.push(new RegExp("^"+r.substr(1)+"$")):e.names.push(new RegExp("^"+r+"$")))}function h(){e.enable("")}function m(r){var n,o;for(n=0,o=e.skips.length;n<o;n++)if(e.skips[n].test(r))return!1;for(n=0,o=e.names.length;n<o;n++)if(e.names[n].test(r))return!0;return!1}function a(r){return r instanceof Error?r.stack||r.message:r}}(q,q.exports)),q.exports}var B;function Z(){return B||(B=1,function(i,e){e=i.exports=M(),e.log=p,e.formatArgs=f,e.save=v,e.load=h,e.useColors=c,e.storage=typeof chrome<"u"&&typeof chrome.storage<"u"?chrome.storage.local:m(),e.colors=["lightseagreen","forestgreen","goldenrod","dodgerblue","darkorchid","crimson"];function c(){return typeof window<"u"&&window.process&&window.process.type==="renderer"?!0:typeof document<"u"&&document.documentElement&&document.documentElement.style&&document.documentElement.style.WebkitAppearance||typeof window<"u"&&window.console&&(window.console.firebug||window.console.exception&&window.console.table)||typeof navigator<"u"&&navigator.userAgent&&navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/)&&parseInt(RegExp.$1,10)>=31||typeof navigator<"u"&&navigator.userAgent&&navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/)}e.formatters.j=function(a){try{return JSON.stringify(a)}catch(r){return"[UnexpectedJSONParseError]: "+r.message}};function f(a){var r=this.useColors;if(a[0]=(r?"%c":"")+this.namespace+(r?" %c":" ")+a[0]+(r?"%c ":" ")+"+"+e.humanize(this.diff),!!r){var n="color: "+this.color;a.splice(1,0,n,"color: inherit");var o=0,l=0;a[0].replace(/%[a-zA-Z%]/g,function(s){s!=="%%"&&(o++,s==="%c"&&(l=o))}),a.splice(l,0,n)}}function p(){return typeof console=="object"&&console.log&&Function.prototype.apply.call(console.log,console,arguments)}function v(a){try{a==null?e.storage.removeItem("debug"):e.storage.debug=a}catch{}}function h(){var a;try{a=e.storage.debug}catch{}return!a&&typeof process<"u"&&"env"in process&&(a=process.env.DEBUG),a}e.enable(h());function m(){try{return window.localStorage}catch{}}}(b,b.exports)),b.exports}var C={exports:{}},U;function H(){return U||(U=1,function(i,e){var c=R,f=T;e=i.exports=M(),e.init=l,e.log=a,e.formatArgs=m,e.save=r,e.load=n,e.useColors=h,e.colors=[6,2,3,4,5,1],e.inspectOpts=Object.keys(process.env).filter(function(s){return/^debug_/i.test(s)}).reduce(function(s,t){var d=t.substring(6).toLowerCase().replace(/_([a-z])/g,function(w,y){return y.toUpperCase()}),u=process.env[t];return/^(yes|on|true|enabled)$/i.test(u)?u=!0:/^(no|off|false|disabled)$/i.test(u)?u=!1:u==="null"?u=null:u=Number(u),s[d]=u,s},{});var p=parseInt(process.env.DEBUG_FD,10)||2;p!==1&&p!==2&&f.deprecate(function(){},"except for stderr(2) and stdout(1), any other usage of DEBUG_FD is deprecated. Override debug.log if you want to use a different log function (https://git.io/debug_fd)")();var v=p===1?process.stdout:p===2?process.stderr:o(p);function h(){return"colors"in e.inspectOpts?!!e.inspectOpts.colors:c.isatty(p)}e.formatters.o=function(s){return this.inspectOpts.colors=this.useColors,f.inspect(s,this.inspectOpts).split(`
-`).map(function(t){return t.trim()}).join(" ")},e.formatters.O=function(s){return this.inspectOpts.colors=this.useColors,f.inspect(s,this.inspectOpts)};function m(s){var t=this.namespace,d=this.useColors;if(d){var u=this.color,w="  \x1B[3"+u+";1m"+t+" \x1B[0m";s[0]=w+s[0].split(`
-`).join(`
-`+w),s.push("\x1B[3"+u+"m+"+e.humanize(this.diff)+"\x1B[0m")}else s[0]=new Date().toUTCString()+" "+t+" "+s[0]}function a(){return v.write(f.format.apply(f,arguments)+`
-`)}function r(s){s==null?delete process.env.DEBUG:process.env.DEBUG=s}function n(){return process.env.DEBUG}function o(s){var t,d=process.binding("tty_wrap");switch(d.guessHandleType(s)){case"TTY":t=new c.WriteStream(s),t._type="tty",t._handle&&t._handle.unref&&t._handle.unref();break;case"FILE":var u=G;t=new u.SyncWriteStream(s,{autoClose:!1}),t._type="fs";break;case"PIPE":case"TCP":var w=I;t=new w.Socket({fd:s,readable:!1,writable:!0}),t.readable=!1,t.read=null,t._type="pipe",t._handle&&t._handle.unref&&t._handle.unref();break;default:throw new Error("Implement me. Unknown stream file type!")}return t.fd=s,t._isStdio=!0,t}function l(s){s.inspectOpts={};for(var t=Object.keys(e.inspectOpts),d=0;d<t.length;d++)s.inspectOpts[t[d]]=e.inspectOpts[t[d]]}e.enable(n())}(C,C.exports)),C.exports}typeof process<"u"&&process.type==="renderer"?O.exports=Z():O.exports=H();var Y=O.exports,S=E,K=z.spawn,W=Y("electron-squirrel-startup"),$=g.app,j=function(i,e){var c=S.resolve(S.dirname(process.execPath),"..","Update.exe");W("Spawning `%s` with args `%s`",c,i),K(c,i,{detached:!0}).on("close",e)},Q=function(){if(process.platform==="win32"){var i=process.argv[1];W("processing squirrel command `%s`",i);var e=S.basename(process.execPath);if(i==="--squirrel-install"||i==="--squirrel-updated")return j(["--createShortcut="+e],$.quit),!0;if(i==="--squirrel-uninstall")return j(["--removeShortcut="+e],$.quit),!0;if(i==="--squirrel-obsolete")return $.quit(),!0}return!1},V=Q();const X=L(V);X&&g.app.quit();const F=()=>{const i=new g.BrowserWindow({width:800,height:600,webPreferences:{preload:E.join(__dirname,"preload.js")}});i.loadFile(E.join(__dirname,"../renderer/main_window/index.html")),i.webContents.openDevTools(),i.maximize()};g.app.on("ready",F);g.app.on("window-all-closed",()=>{process.platform!=="darwin"&&g.app.quit()});g.app.on("activate",()=>{g.BrowserWindow.getAllWindows().length===0&&F()});
+"use strict";
+const require$$3$1 = require("electron");
+const path$1 = require("path");
+const require$$1$1 = require("child_process");
+const require$$0 = require("tty");
+const require$$1 = require("util");
+const require$$3 = require("fs");
+const require$$4 = require("net");
+function getDefaultExportFromCjs(x) {
+  return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
+}
+var src = { exports: {} };
+var browser = { exports: {} };
+var debug$1 = { exports: {} };
+var ms;
+var hasRequiredMs;
+function requireMs() {
+  if (hasRequiredMs) return ms;
+  hasRequiredMs = 1;
+  var s = 1e3;
+  var m = s * 60;
+  var h = m * 60;
+  var d = h * 24;
+  var y = d * 365.25;
+  ms = function(val, options) {
+    options = options || {};
+    var type = typeof val;
+    if (type === "string" && val.length > 0) {
+      return parse(val);
+    } else if (type === "number" && isNaN(val) === false) {
+      return options.long ? fmtLong(val) : fmtShort(val);
+    }
+    throw new Error(
+      "val is not a non-empty string or a valid number. val=" + JSON.stringify(val)
+    );
+  };
+  function parse(str) {
+    str = String(str);
+    if (str.length > 100) {
+      return;
+    }
+    var match = /^((?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|years?|yrs?|y)?$/i.exec(
+      str
+    );
+    if (!match) {
+      return;
+    }
+    var n = parseFloat(match[1]);
+    var type = (match[2] || "ms").toLowerCase();
+    switch (type) {
+      case "years":
+      case "year":
+      case "yrs":
+      case "yr":
+      case "y":
+        return n * y;
+      case "days":
+      case "day":
+      case "d":
+        return n * d;
+      case "hours":
+      case "hour":
+      case "hrs":
+      case "hr":
+      case "h":
+        return n * h;
+      case "minutes":
+      case "minute":
+      case "mins":
+      case "min":
+      case "m":
+        return n * m;
+      case "seconds":
+      case "second":
+      case "secs":
+      case "sec":
+      case "s":
+        return n * s;
+      case "milliseconds":
+      case "millisecond":
+      case "msecs":
+      case "msec":
+      case "ms":
+        return n;
+      default:
+        return void 0;
+    }
+  }
+  function fmtShort(ms2) {
+    if (ms2 >= d) {
+      return Math.round(ms2 / d) + "d";
+    }
+    if (ms2 >= h) {
+      return Math.round(ms2 / h) + "h";
+    }
+    if (ms2 >= m) {
+      return Math.round(ms2 / m) + "m";
+    }
+    if (ms2 >= s) {
+      return Math.round(ms2 / s) + "s";
+    }
+    return ms2 + "ms";
+  }
+  function fmtLong(ms2) {
+    return plural(ms2, d, "day") || plural(ms2, h, "hour") || plural(ms2, m, "minute") || plural(ms2, s, "second") || ms2 + " ms";
+  }
+  function plural(ms2, n, name) {
+    if (ms2 < n) {
+      return;
+    }
+    if (ms2 < n * 1.5) {
+      return Math.floor(ms2 / n) + " " + name;
+    }
+    return Math.ceil(ms2 / n) + " " + name + "s";
+  }
+  return ms;
+}
+var hasRequiredDebug;
+function requireDebug() {
+  if (hasRequiredDebug) return debug$1.exports;
+  hasRequiredDebug = 1;
+  (function(module, exports) {
+    exports = module.exports = createDebug.debug = createDebug["default"] = createDebug;
+    exports.coerce = coerce;
+    exports.disable = disable;
+    exports.enable = enable;
+    exports.enabled = enabled;
+    exports.humanize = requireMs();
+    exports.names = [];
+    exports.skips = [];
+    exports.formatters = {};
+    var prevTime;
+    function selectColor(namespace) {
+      var hash = 0, i;
+      for (i in namespace) {
+        hash = (hash << 5) - hash + namespace.charCodeAt(i);
+        hash |= 0;
+      }
+      return exports.colors[Math.abs(hash) % exports.colors.length];
+    }
+    function createDebug(namespace) {
+      function debug2() {
+        if (!debug2.enabled) return;
+        var self = debug2;
+        var curr = +/* @__PURE__ */ new Date();
+        var ms2 = curr - (prevTime || curr);
+        self.diff = ms2;
+        self.prev = prevTime;
+        self.curr = curr;
+        prevTime = curr;
+        var args = new Array(arguments.length);
+        for (var i = 0; i < args.length; i++) {
+          args[i] = arguments[i];
+        }
+        args[0] = exports.coerce(args[0]);
+        if ("string" !== typeof args[0]) {
+          args.unshift("%O");
+        }
+        var index = 0;
+        args[0] = args[0].replace(/%([a-zA-Z%])/g, function(match, format) {
+          if (match === "%%") return match;
+          index++;
+          var formatter = exports.formatters[format];
+          if ("function" === typeof formatter) {
+            var val = args[index];
+            match = formatter.call(self, val);
+            args.splice(index, 1);
+            index--;
+          }
+          return match;
+        });
+        exports.formatArgs.call(self, args);
+        var logFn = debug2.log || exports.log || console.log.bind(console);
+        logFn.apply(self, args);
+      }
+      debug2.namespace = namespace;
+      debug2.enabled = exports.enabled(namespace);
+      debug2.useColors = exports.useColors();
+      debug2.color = selectColor(namespace);
+      if ("function" === typeof exports.init) {
+        exports.init(debug2);
+      }
+      return debug2;
+    }
+    function enable(namespaces) {
+      exports.save(namespaces);
+      exports.names = [];
+      exports.skips = [];
+      var split = (typeof namespaces === "string" ? namespaces : "").split(/[\s,]+/);
+      var len = split.length;
+      for (var i = 0; i < len; i++) {
+        if (!split[i]) continue;
+        namespaces = split[i].replace(/\*/g, ".*?");
+        if (namespaces[0] === "-") {
+          exports.skips.push(new RegExp("^" + namespaces.substr(1) + "$"));
+        } else {
+          exports.names.push(new RegExp("^" + namespaces + "$"));
+        }
+      }
+    }
+    function disable() {
+      exports.enable("");
+    }
+    function enabled(name) {
+      var i, len;
+      for (i = 0, len = exports.skips.length; i < len; i++) {
+        if (exports.skips[i].test(name)) {
+          return false;
+        }
+      }
+      for (i = 0, len = exports.names.length; i < len; i++) {
+        if (exports.names[i].test(name)) {
+          return true;
+        }
+      }
+      return false;
+    }
+    function coerce(val) {
+      if (val instanceof Error) return val.stack || val.message;
+      return val;
+    }
+  })(debug$1, debug$1.exports);
+  return debug$1.exports;
+}
+var hasRequiredBrowser;
+function requireBrowser() {
+  if (hasRequiredBrowser) return browser.exports;
+  hasRequiredBrowser = 1;
+  (function(module, exports) {
+    exports = module.exports = requireDebug();
+    exports.log = log;
+    exports.formatArgs = formatArgs;
+    exports.save = save;
+    exports.load = load;
+    exports.useColors = useColors;
+    exports.storage = "undefined" != typeof chrome && "undefined" != typeof chrome.storage ? chrome.storage.local : localstorage();
+    exports.colors = [
+      "lightseagreen",
+      "forestgreen",
+      "goldenrod",
+      "dodgerblue",
+      "darkorchid",
+      "crimson"
+    ];
+    function useColors() {
+      if (typeof window !== "undefined" && window.process && window.process.type === "renderer") {
+        return true;
+      }
+      return typeof document !== "undefined" && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance || // is firebug? http://stackoverflow.com/a/398120/376773
+      typeof window !== "undefined" && window.console && (window.console.firebug || window.console.exception && window.console.table) || // is firefox >= v31?
+      // https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
+      typeof navigator !== "undefined" && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31 || // double check webkit in userAgent just in case we are in a worker
+      typeof navigator !== "undefined" && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/);
+    }
+    exports.formatters.j = function(v) {
+      try {
+        return JSON.stringify(v);
+      } catch (err) {
+        return "[UnexpectedJSONParseError]: " + err.message;
+      }
+    };
+    function formatArgs(args) {
+      var useColors2 = this.useColors;
+      args[0] = (useColors2 ? "%c" : "") + this.namespace + (useColors2 ? " %c" : " ") + args[0] + (useColors2 ? "%c " : " ") + "+" + exports.humanize(this.diff);
+      if (!useColors2) return;
+      var c = "color: " + this.color;
+      args.splice(1, 0, c, "color: inherit");
+      var index = 0;
+      var lastC = 0;
+      args[0].replace(/%[a-zA-Z%]/g, function(match) {
+        if ("%%" === match) return;
+        index++;
+        if ("%c" === match) {
+          lastC = index;
+        }
+      });
+      args.splice(lastC, 0, c);
+    }
+    function log() {
+      return "object" === typeof console && console.log && Function.prototype.apply.call(console.log, console, arguments);
+    }
+    function save(namespaces) {
+      try {
+        if (null == namespaces) {
+          exports.storage.removeItem("debug");
+        } else {
+          exports.storage.debug = namespaces;
+        }
+      } catch (e) {
+      }
+    }
+    function load() {
+      var r;
+      try {
+        r = exports.storage.debug;
+      } catch (e) {
+      }
+      if (!r && typeof process !== "undefined" && "env" in process) {
+        r = process.env.DEBUG;
+      }
+      return r;
+    }
+    exports.enable(load());
+    function localstorage() {
+      try {
+        return window.localStorage;
+      } catch (e) {
+      }
+    }
+  })(browser, browser.exports);
+  return browser.exports;
+}
+var node = { exports: {} };
+var hasRequiredNode;
+function requireNode() {
+  if (hasRequiredNode) return node.exports;
+  hasRequiredNode = 1;
+  (function(module, exports) {
+    var tty = require$$0;
+    var util = require$$1;
+    exports = module.exports = requireDebug();
+    exports.init = init;
+    exports.log = log;
+    exports.formatArgs = formatArgs;
+    exports.save = save;
+    exports.load = load;
+    exports.useColors = useColors;
+    exports.colors = [6, 2, 3, 4, 5, 1];
+    exports.inspectOpts = Object.keys(process.env).filter(function(key) {
+      return /^debug_/i.test(key);
+    }).reduce(function(obj, key) {
+      var prop = key.substring(6).toLowerCase().replace(/_([a-z])/g, function(_, k) {
+        return k.toUpperCase();
+      });
+      var val = process.env[key];
+      if (/^(yes|on|true|enabled)$/i.test(val)) val = true;
+      else if (/^(no|off|false|disabled)$/i.test(val)) val = false;
+      else if (val === "null") val = null;
+      else val = Number(val);
+      obj[prop] = val;
+      return obj;
+    }, {});
+    var fd = parseInt(process.env.DEBUG_FD, 10) || 2;
+    if (1 !== fd && 2 !== fd) {
+      util.deprecate(function() {
+      }, "except for stderr(2) and stdout(1), any other usage of DEBUG_FD is deprecated. Override debug.log if you want to use a different log function (https://git.io/debug_fd)")();
+    }
+    var stream = 1 === fd ? process.stdout : 2 === fd ? process.stderr : createWritableStdioStream(fd);
+    function useColors() {
+      return "colors" in exports.inspectOpts ? Boolean(exports.inspectOpts.colors) : tty.isatty(fd);
+    }
+    exports.formatters.o = function(v) {
+      this.inspectOpts.colors = this.useColors;
+      return util.inspect(v, this.inspectOpts).split("\n").map(function(str) {
+        return str.trim();
+      }).join(" ");
+    };
+    exports.formatters.O = function(v) {
+      this.inspectOpts.colors = this.useColors;
+      return util.inspect(v, this.inspectOpts);
+    };
+    function formatArgs(args) {
+      var name = this.namespace;
+      var useColors2 = this.useColors;
+      if (useColors2) {
+        var c = this.color;
+        var prefix = "  \x1B[3" + c + ";1m" + name + " \x1B[0m";
+        args[0] = prefix + args[0].split("\n").join("\n" + prefix);
+        args.push("\x1B[3" + c + "m+" + exports.humanize(this.diff) + "\x1B[0m");
+      } else {
+        args[0] = (/* @__PURE__ */ new Date()).toUTCString() + " " + name + " " + args[0];
+      }
+    }
+    function log() {
+      return stream.write(util.format.apply(util, arguments) + "\n");
+    }
+    function save(namespaces) {
+      if (null == namespaces) {
+        delete process.env.DEBUG;
+      } else {
+        process.env.DEBUG = namespaces;
+      }
+    }
+    function load() {
+      return process.env.DEBUG;
+    }
+    function createWritableStdioStream(fd2) {
+      var stream2;
+      var tty_wrap = process.binding("tty_wrap");
+      switch (tty_wrap.guessHandleType(fd2)) {
+        case "TTY":
+          stream2 = new tty.WriteStream(fd2);
+          stream2._type = "tty";
+          if (stream2._handle && stream2._handle.unref) {
+            stream2._handle.unref();
+          }
+          break;
+        case "FILE":
+          var fs = require$$3;
+          stream2 = new fs.SyncWriteStream(fd2, { autoClose: false });
+          stream2._type = "fs";
+          break;
+        case "PIPE":
+        case "TCP":
+          var net = require$$4;
+          stream2 = new net.Socket({
+            fd: fd2,
+            readable: false,
+            writable: true
+          });
+          stream2.readable = false;
+          stream2.read = null;
+          stream2._type = "pipe";
+          if (stream2._handle && stream2._handle.unref) {
+            stream2._handle.unref();
+          }
+          break;
+        default:
+          throw new Error("Implement me. Unknown stream file type!");
+      }
+      stream2.fd = fd2;
+      stream2._isStdio = true;
+      return stream2;
+    }
+    function init(debug2) {
+      debug2.inspectOpts = {};
+      var keys = Object.keys(exports.inspectOpts);
+      for (var i = 0; i < keys.length; i++) {
+        debug2.inspectOpts[keys[i]] = exports.inspectOpts[keys[i]];
+      }
+    }
+    exports.enable(load());
+  })(node, node.exports);
+  return node.exports;
+}
+if (typeof process !== "undefined" && process.type === "renderer") {
+  src.exports = requireBrowser();
+} else {
+  src.exports = requireNode();
+}
+var srcExports = src.exports;
+var path = path$1;
+var spawn = require$$1$1.spawn;
+var debug = srcExports("electron-squirrel-startup");
+var app = require$$3$1.app;
+var run = function(args, done) {
+  var updateExe = path.resolve(path.dirname(process.execPath), "..", "Update.exe");
+  debug("Spawning `%s` with args `%s`", updateExe, args);
+  spawn(updateExe, args, {
+    detached: true
+  }).on("close", done);
+};
+var check = function() {
+  if (process.platform === "win32") {
+    var cmd = process.argv[1];
+    debug("processing squirrel command `%s`", cmd);
+    var target = path.basename(process.execPath);
+    if (cmd === "--squirrel-install" || cmd === "--squirrel-updated") {
+      run(["--createShortcut=" + target], app.quit);
+      return true;
+    }
+    if (cmd === "--squirrel-uninstall") {
+      run(["--removeShortcut=" + target], app.quit);
+      return true;
+    }
+    if (cmd === "--squirrel-obsolete") {
+      app.quit();
+      return true;
+    }
+  }
+  return false;
+};
+var electronSquirrelStartup = check();
+const started = /* @__PURE__ */ getDefaultExportFromCjs(electronSquirrelStartup);
+if (started) {
+  require$$3$1.app.quit();
+}
+const createWindow = () => {
+  const mainWindow = new require$$3$1.BrowserWindow({
+    width: 800,
+    height: 600,
+    webPreferences: {
+      preload: path$1.join(__dirname, "preload.js"),
+      nodeIntegration: true
+    }
+  });
+  {
+    mainWindow.loadURL("http://localhost:5173");
+  }
+  mainWindow.webContents.openDevTools();
+  mainWindow.maximize();
+};
+require$$3$1.app.on("ready", createWindow);
+require$$3$1.app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
+    require$$3$1.app.quit();
+  }
+});
+require$$3$1.app.on("activate", () => {
+  if (require$$3$1.BrowserWindow.getAllWindows().length === 0) {
+    createWindow();
+  }
+});

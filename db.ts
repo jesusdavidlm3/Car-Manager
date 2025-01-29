@@ -9,10 +9,21 @@ export const getAllCarBrands = async() => {
                 console.log(err)
                 reject(err)
             }else{
-                console.log(list)
                 resolve(list)
             }
-            // return list
+        })
+    })
+}
+
+export const getAllCarModels = async() => {
+    return new Promise((resolve, reject) => {
+        db.all("SELECT * FROM carModels", (err, list) => {
+            if(err){
+                console.log(err)
+                reject(err)
+            }else{
+                resolve(list)
+            }
         })
     })
 }
