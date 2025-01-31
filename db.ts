@@ -54,14 +54,18 @@ export const getAllCarModels = async() => {
     })
 }
 
-export const checkIdentification = async(identification: string) => {
+export const checkIdentification = async(identification: String) => {
     return new Promise((resolve, reject) => {
         db.get("SELECT * FROM clients WHERE id = ?", [identification], (err, res) => {
             if(err){
                 console.log(err)
                 reject(err)
             }else{
-                console.log(res)
+                if(res == undefined){
+                    resolve(false)
+                }else{
+                    resolve(res)
+                }
             }
         })
     })
@@ -87,7 +91,11 @@ export const checkCarPlate = async (plate: String) => {
                     console.log(err)
                     reject(err)
                 }else{
-                    console.log(res)
+                    if(res == undefined){
+                        resolve(false)
+                    }else{
+                        resolve(res)
+                    }
                 }
             })
         })

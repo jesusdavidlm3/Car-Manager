@@ -33,7 +33,11 @@ const checkIdentification$1 = async (identification) => {
         console.log(err);
         reject(err);
       } else {
-        console.log(res);
+        if (res == void 0) {
+          resolve(false);
+        } else {
+          resolve(res);
+        }
       }
     });
   });
@@ -57,7 +61,11 @@ const checkCarPlate$1 = async (plate) => {
         console.log(err);
         reject(err);
       } else {
-        console.log(res);
+        if (res == void 0) {
+          resolve(false);
+        } else {
+          resolve(res);
+        }
       }
     });
   });
@@ -110,41 +118,41 @@ const getEntries$1 = async (entryId) => {
     });
   });
 };
-const getAllCarBrands = async () => {
+async function getAllCarBrands() {
   return await getAllCarBrands$1();
-};
-const getAllCarModels = async () => {
+}
+async function getAllCarModels() {
   return await getAllCarModels$1();
-};
-const checkIdentification = async (identification) => {
+}
+async function checkIdentification(identification) {
   return await checkIdentification$1(identification);
-};
-const registerClient = async (data) => {
+}
+async function registerClient(data) {
   return await registerClient$1(data);
-};
-const checkCarPlate = async (plate) => {
+}
+async function checkCarPlate(plate) {
   return await checkCarPlate$1(plate);
-};
-const registerCar = async (data) => {
+}
+async function registerCar(data) {
   return await registerCar$1(data);
-};
-const registerEntry = async (data) => {
+}
+async function registerEntry(data) {
   return await registerEntry$1(data);
-};
-const getActiveCars = async () => {
+}
+async function getActiveCars() {
   return await getActiveCars$1();
-};
-const getEntries = async (entryId) => {
+}
+async function getEntries(entryId) {
   return await getEntries$1(entryId);
-};
+}
 electron.contextBridge.exposeInMainWorld("api", {
-  getAllCarBrands: getAllCarBrands(),
-  getAllCarModels: getAllCarModels(),
-  checkIdentification: checkIdentification(),
-  registerClient: registerClient(),
-  checkCarPlate: checkCarPlate(),
-  registerCar: registerCar(),
-  registerEntry: registerEntry(),
-  getActiveCars: getActiveCars(),
-  getEntries: getEntries()
+  getAllCarBrands,
+  getAllCarModels,
+  checkIdentification,
+  registerClient,
+  checkCarPlate,
+  registerCar,
+  registerEntry,
+  getActiveCars,
+  getEntries
 });

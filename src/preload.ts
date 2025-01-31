@@ -2,50 +2,50 @@ import { contextBridge } from "electron";
 import * as db from "../db"
 import { newClient, newCar, newEntry, newReg } from '../db.ts'
 
-const getAllCarBrands = async () => {
+async function getAllCarBrands(){
     return await db.getAllCarBrands()
 }
 
-const getAllCarModels = async () => {
+async function getAllCarModels(){
     return await db.getAllCarModels()
 }
 
-const checkIdentification = async (identification: String) => {
+async function checkIdentification(identification: String){
     return await db.checkIdentification(identification)
 }
 
-const registerClient = async (data: newClient) => {
+async function registerClient(data: newClient){
     return await db.registerClient(data)
 }
 
-const checkCarPlate = async (plate: String) => {
+async function checkCarPlate(plate: String){
     return await db.checkCarPlate(plate)   
 }
 
-const registerCar = async (data: newCar) => {
+async function registerCar(data: newCar){
     return await db.registerCar(data)
 }
 
-const registerEntry = async (data) => {
+async function registerEntry(data: newEntry){
     return await db.registerEntry(data)
 }
 
-const getActiveCars = async () => {
+async function getActiveCars(){
     return await db.getActiveCars()
 }
 
-const getEntries = async (entryId) => {
+async function getEntries(entryId: String){
     return await db.getEntries(entryId)
 }
 
 contextBridge.exposeInMainWorld("api", {
-    getAllCarBrands: getAllCarBrands(),
-    getAllCarModels: getAllCarModels(),
-    checkIdentification: checkIdentification(),
-    registerClient: registerClient(),
-    checkCarPlate: checkCarPlate(),
-    registerCar: registerCar(),
-    registerEntry: registerEntry(),
-    getActiveCars: getActiveCars(),
-    getEntries: getEntries()
+    getAllCarBrands: getAllCarBrands,
+    getAllCarModels: getAllCarModels,
+    checkIdentification: checkIdentification,
+    registerClient: registerClient,
+    checkCarPlate: checkCarPlate,
+    registerCar: registerCar,
+    registerEntry: registerEntry,
+    getActiveCars: getActiveCars,
+    getEntries: getEntries
 })

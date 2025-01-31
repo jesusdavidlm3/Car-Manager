@@ -23,15 +23,81 @@ interface CheckRegsProps {
 }
 
 export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
-
-    const [selectedBrand, setSelectedBrand] = useState()
-    const [selectedModel, setSelectedModel] = useState()
-
+    //Control de las listas mostradas en selectores
     const { carBrandsList, carModelsList } = useContext(appContext)
     const [showListModels, setShowListModels] = useState([])
+    
+    //Datos captados para ser enviados
+    const [carPlate, setCarPlate] = useState<string>()
+    const [selectedBrand, setSelectedBrand] = useState<number>()
+    const [selectedModel, setSelectedModel] = useState<number>()
+    const [selectedYear, setSelectedYear] = useState<string>()
+    const [clientIdentification, setClientIdentification] = useState<string>()
+    const [FoundCarId, setFoundCarId] = useState<string>("Prueba")
 
-    const filterModels = (e: string) => {
+    //Control de carros y clientes ya registrados
+    const [carFound, setCarFound] = useState<boolean>(false)
+    const [clientFound, setClientFound] = useState<boolean>(false)
+    const [disablePlate, setDisablePlate] = useState<boolean>(false)
+    const [disableIdentification, setDisableIdentification] = useState<boolean>(false)
+
+    const filterModels = (e: number) => {
         setShowListModels( carModelsList.filter((item:carModel) => item.brand == e))
+    }
+
+    const checkPlate = async(e: string) => {
+        const res = await window.api.checkCarPlate(e)
+        if(res != false){
+            setDisablePlate(true)
+            setCarFound(true)
+            // setSelectedBrand(res.brandId)
+            // setSelectedModel(res.modelId)
+            // setFoundCarId(res.carId)
+        }else{
+            setDisablePlate(true)
+        }
+    } 
+
+    const checkId = async(e: string) => {
+        const res = await window.api.checkIdentification(e)
+        if(res != false){
+            setDisableIdentification(true)
+            setClientFound(true)
+        }else{
+            setDisableIdentification(true)
+        }
+    }
+
+    const submitEntry = () => {
+        if(carFound == false){
+            const plates = document.getElementById("plateInput").value
+
+            const data = {
+                plates: plates,
+                brandId: selectedBrand,
+                modelId: selectedModel,
+                year: selectedYear
+            }
+            // window.api.registerCar(data)
+            console.log(data)
+        }
+
+        if(clientFound == false){
+            const id = document.getElementById("idInput").value
+            const name = document.getElementById("nameInput").value
+
+            const data = {
+                id: id,
+                name: name
+            }
+            // window.api.registerClient(data)
+            console.log(data)
+        }
+
+        const data = {
+
+        }
+
     }
 
     return(
@@ -42,28 +108,34 @@ export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
             open={open}
             footer={[
                 <Button variant='solid' color='danger' onClick={onCancel}>Cancelar</Button>,
-                <Button variant='solid' color='primary'>Ingresar al taller</Button>
+                <Button variant='solid' color='primary' onClick={submitEntry}>Ingresar al taller</Button>
             ]}
         >
             <Form>
                 <Form.Item label="Numero de placa">
-                    <Input.Search/>
+                    <Input.Search onSearch={checkPlate} disabled={disablePlate || carFound} id='plateInput'/>
                 </Form.Item>
-                <Form.Item label="Marca">
-                    <Select options={carBrandsList} onChange={(e) => {setSelectedBrand(e), filterModels(e)}}/>
-                </Form.Item>
-                <Form.Item label="Modelo">
-                    <Select options={showListModels}/>
-                </Form.Item>
-                <Form.Item label='Año'>
-                    <DatePicker picker='year'/>
-                </Form.Item>
+                { disablePlate && (
+                    <>
+                        <Form.Item label="Marca">
+                            <Select options={carBrandsList} onChange={(e) => {setSelectedBrand(e), filterModels(e)}} disabled={carFound}/>
+                        </Form.Item>
+                        <Form.Item label="Modelo">
+                            <Select options={showListModels} disabled={carFound} onChange={(e) => setSelectedModel(e)}/>
+                        </Form.Item>
+                        <Form.Item label='Año'>
+                            <DatePicker picker='year' disabled={carFound} onChange={(e) => setSelectedYear(`${e.$y}`)}/>
+                        </Form.Item>
+                    </>
+                ) }
                 <Form.Item label="Cedula del cliente">
-                    <Input.Search/>
+                    <Input.Search id='idInput' disabled={disableIdentification} onSearch={checkId}/>
                 </Form.Item>
-                <Form.Item label="Nombre del cliente">
-                    <Input/>
-                </Form.Item>
+                { disableIdentification && (
+                    <Form.Item label="Nombre del cliente">
+                        <Input id='nameInput' disabled={clientFound}/>
+                    </Form.Item>
+                ) }
             </Form>
         </Modal>
     )
