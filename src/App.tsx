@@ -7,13 +7,13 @@ import { appContext } from './context/appContext';
 
 const App: React.FC = () => {
 
-    const {view} = useContext(routerContext)
     // const {contextHolder} = useContext(appContext)
+    const {view} = useContext(routerContext)
 
     return(
         <ContextProvider>
-            {/* {contextHolder} */}
             <div className='Root'>
+                {/* {contextHolder} */}
                 {(view == 'Home' || view == 'Actives' || view == 'Regs') && <NavBar/>}
                     <Router />
             </div>

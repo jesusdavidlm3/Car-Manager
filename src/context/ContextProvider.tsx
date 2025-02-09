@@ -33,6 +33,7 @@ const ContextProvider: React.FC<contextProviderInterface> = ({children}) => {
                 contextHolder
             }}
         >
+            {contextHolder}
             {children}
         </appContext.Provider>
     )
