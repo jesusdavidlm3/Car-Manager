@@ -29,8 +29,8 @@ CREATE TABLE Checkin (
   id text NOT NULL PRIMARY KEY,
   carId text NOT NULL,
   clientId text NOT NULL,
-  chekinDate datetime NOT NULL,
-  chekoutDate datetime,
+  checkinDate datetime NOT NULL,
+  checkoutDate datetime,
   entranceState text,
   FOREIGN KEY (carId) REFERENCES cars (id),
   FOREIGN KEY (clientId) REFERENCES clients (id)
@@ -38,10 +38,10 @@ CREATE TABLE Checkin (
 
 CREATE TABLE regs (
   id text NOT NULL PRIMARY KEY,
-  chekinId text NOT NULL,
+  checkinId text NOT NULL,
   quantity integer,
   description text NOT NULL,
-  FOREIGN KEY (chekinId) REFERENCES Checkin (id)
+  FOREIGN KEY (checkinId) REFERENCES Checkin (id)
 );
 
 -- Insertar marcas de automóviles

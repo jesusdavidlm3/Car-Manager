@@ -10,7 +10,7 @@ async function getAllCarModels(){
     return await db.getAllCarModels()
 }
 
-async function checkIdentification(identification: String){
+async function checkIdentification(identification: string){
     return await db.checkIdentification(identification)
 }
 
@@ -18,7 +18,7 @@ async function registerClient(data: newClient){
     return await db.registerClient(data)
 }
 
-async function checkCarPlate(plate: String){
+async function checkCarPlate(plate: string){
     return await db.checkCarPlate(plate)   
 }
 
