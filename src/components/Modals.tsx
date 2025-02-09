@@ -35,7 +35,7 @@ export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
     const [selectedYear, setSelectedYear] = useState<string>()
     const [clientIdentification, setClientIdentification] = useState<string>()
     const [clientName, setClientName] = useState<string>()
-    const [foundCarId, setFoundCarId] = useState<string>("Prueba")
+    const [foundCarId, setFoundCarId] = useState<string>(null)
 
     //Control de carros y clientes ya registrados
     const [carFound, setCarFound] = useState<boolean>(false)
@@ -105,7 +105,7 @@ export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
             checkoutDate: null,
             entranceState: aditionalNotes
         }
-
+        console.log(carResult)
         const asignedEntry = await window.api.registerEntry(data)
         if(asignedEntry == true){
             onCancel()
@@ -119,7 +119,6 @@ export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
                 content: "ah ocurrido un error"
             })
         }
-
     }
 
     return(

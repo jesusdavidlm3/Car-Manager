@@ -1,40 +1,36 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Button, Tooltip } from 'antd'
 import { PlusOutlined, FileTextOutlined, CheckOutlined } from '@ant-design/icons'
 import { AddEntry, CheckRegs, ConfirmCheckout } from '../components/Modals'
+import { getOnList } from '../lib/functions'
+import { appContext } from '../context/appContext'
 
 const Actives: React.FC = () => {
+
+    const { carBrandsList, carModelsList } = useContext(appContext)
 
     const [addEntryModal, setAddEntryModal] = useState(false)
     const [checkRegsModal, setCheckRegsModal] = useState(false)
     const [confirmCheckoutModal, setConfirmCheckOutModal] = useState(false)
 
-    const items = [{
-        id: '1',
-        brand: "Mitsubishi",
-        model: "Lancer",
-        year: "2017",
-        plates: "jjs7f6"
-    },{
-        id: '2',
-        brand: "Toyota",
-        model: "Corola",
-        year: "2007",
-        plates: "k34iw8s"
-    },{
-        id: '3',
-        brand: "Chevrolet",
-        model: "Camaro",
-        year: "2012",
-        plates: "k39ds2"
-    }]
+    const [showList, setShowList] = useState([])
+
+    useEffect(() => {
+        getActives()
+    }, [])
+
+    const getActives = async() => {
+        const res = await window.api.getActiveCars()
+        console.log(res)
+        setShowList(res)
+    }
 
     return(
         <>
             <div className='Actives'>
-                {items.map(item => (
+                {showList.map(item => (
                     <div className='listItem' key={item.id}>
-                        <h3>{`${item.brand} - ${item.model} - ${item.year}`}</h3>
+                        <h3>{`${getOnList(carBrandsList, item.brandId)} ${getOnList(carModelsList, item.modelId)} ${item.year}`}</h3>
                         <div className='Buttons'>
                             <Tooltip title="Retirar del taller">
                                 <Button

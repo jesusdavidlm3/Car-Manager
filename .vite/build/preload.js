@@ -145,7 +145,7 @@ const registerEntry$1 = async (data) => {
 };
 const getActiveCars$1 = async () => {
   return new Promise((resolve, reject) => {
-    db.all("SELECT * FROM cars WHERE checkoutDate = null", (err, list) => {
+    db.all(`SELECT * FROM Checkin INNER JOIN cars ON cars.id = Checkin.carId WHERE checkoutDate IS NULL`, (err, list) => {
       if (err) {
         console.log(err);
         reject(err);
