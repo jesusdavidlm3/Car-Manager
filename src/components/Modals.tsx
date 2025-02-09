@@ -3,6 +3,7 @@ import { Modal, Button, Input, Form, Select, DatePicker, InputNumber } from "ant
 import type { DatePickerProps } from 'antd';
 import { appContext } from '../context/appContext'
 import { carModel, carBrand } from '../context/ContextProvider'
+import { newEntry } from 'db';
 
 declare global {
     interface Window {
@@ -24,7 +25,7 @@ interface CheckRegsProps {
 
 export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
     //Control de las listas mostradas en selectores
-    const { carBrandsList, carModelsList } = useContext(appContext)
+    const { carBrandsList, carModelsList, messageApi } = useContext(appContext)
     const [showListModels, setShowListModels] = useState([])
     
     //Datos captados para ser enviados
@@ -33,7 +34,8 @@ export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
     const [selectedModel, setSelectedModel] = useState<number>()
     const [selectedYear, setSelectedYear] = useState<string>()
     const [clientIdentification, setClientIdentification] = useState<string>()
-    const [FoundCarId, setFoundCarId] = useState<string>("Prueba")
+    const [clientName, setClientName] = useState<string>()
+    const [foundCarId, setFoundCarId] = useState<string>("Prueba")
 
     //Control de carros y clientes ya registrados
     const [carFound, setCarFound] = useState<boolean>(false)
@@ -50,9 +52,9 @@ export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
         if(res != false){
             setDisablePlate(true)
             setCarFound(true)
-            // setSelectedBrand(res.brandId)
-            // setSelectedModel(res.modelId)
-            // setFoundCarId(res.carId)
+            setSelectedBrand(res.brandId)
+            setSelectedModel(res.modelId)
+            setFoundCarId(res.id)
         }else{
             setDisablePlate(true)
         }
@@ -63,12 +65,27 @@ export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
         if(res != false){
             setDisableIdentification(true)
             setClientFound(true)
+            setClientName(res.name)
         }else{
             setDisableIdentification(true)
         }
     }
 
-    const submitEntry = () => {
+    const submitEntry = async() => {
+        let carResult
+        const clientId = document.getElementById("idInput").value
+        const clientName = document.getElementById("nameInput").value
+        const aditionalNotes = document.getElementById("aditionalNotes").value
+        const currentDate = new Date()
+
+        if(clientFound == false){
+            const data = {
+                id: clientId,
+                name: clientName
+            }
+            window.api.registerClient(data)
+        }
+
         if(carFound == false){
             const plates = document.getElementById("plateInput").value
 
@@ -78,24 +95,29 @@ export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
                 modelId: selectedModel,
                 year: selectedYear
             }
-            // window.api.registerCar(data)
-            console.log(data)
+            carResult = await window.api.registerCar(data)
         }
 
-        if(clientFound == false){
-            const id = document.getElementById("idInput").value
-            const name = document.getElementById("nameInput").value
-
-            const data = {
-                id: id,
-                name: name
-            }
-            // window.api.registerClient(data)
-            console.log(data)
+        const data: newEntry = {
+            carId: foundCarId || carResult.carId,
+            clientId: clientId,
+            checkingDate: currentDate,
+            checkoutDate: null,
+            entranceState: aditionalNotes
         }
 
-        const data = {
-
+        const asignedEntry = await window.api.registerEntry(data)
+        if(asignedEntry == true){
+            onCancel()
+            messageApi.open({
+                type: 'success',
+                content: "Entrada registrada"
+            })
+        }else{
+            messageApi.open({
+                type: "error",
+                content: "ah ocurrido un error"
+            })
         }
 
     }
@@ -118,13 +140,16 @@ export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
                 { disablePlate && (
                     <>
                         <Form.Item label="Marca">
-                            <Select options={carBrandsList} onChange={(e) => {setSelectedBrand(e), filterModels(e)}} disabled={carFound}/>
+                            <Select value={selectedBrand} options={carBrandsList} onChange={(e) => {setSelectedBrand(e), filterModels(e)}} disabled={carFound}/>
                         </Form.Item>
                         <Form.Item label="Modelo">
-                            <Select options={showListModels} disabled={carFound} onChange={(e) => setSelectedModel(e)}/>
+                            <Select value={selectedModel} options={showListModels} disabled={carFound} onChange={(e) => setSelectedModel(e)}/>
                         </Form.Item>
                         <Form.Item label='Año'>
                             <DatePicker picker='year' disabled={carFound} onChange={(e) => setSelectedYear(`${e.$y}`)}/>
+                        </Form.Item>
+                        <Form.Item>
+                            <Input.TextArea id="aditionalNotes" placeholder='Notas Adicionales' autoSize={true}/>
                         </Form.Item>
                     </>
                 ) }
@@ -133,7 +158,7 @@ export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
                 </Form.Item>
                 { disableIdentification && (
                     <Form.Item label="Nombre del cliente">
-                        <Input id='nameInput' disabled={clientFound}/>
+                        <Input value={clientName} id='nameInput' disabled={clientFound}/>
                     </Form.Item>
                 ) }
             </Form>

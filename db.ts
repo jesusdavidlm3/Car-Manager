@@ -1,31 +1,32 @@
 import sqlite3 from "sqlite3";
+import { v4 as idGenerator } from "uuid";
 
 const db = new sqlite3.Database("db.db")
 
 export  interface newClient{
-    id: String,
-    name: String
+    id: string,
+    name: string
 }
 
 export interface newCar{
-    plates: String,
-    brandId: Number,
-    modelId: Number,
-    year: String 
+    plates: string,
+    brandId: number,
+    modelId: number,
+    year: string 
 }
 
 export interface newEntry{
-    carId: String,
-    clientId: String,
-    checkingDate: String,
-    checkoutDate: String | null,
-    entranceState: String
+    carId: string,
+    clientId: string,
+    checkingDate: Date,
+    checkoutDate: Date | null,
+    entranceState: string
 }
 
 export interface newReg{
-    quantity: Number | null,
-    description: String,
-    entryId: String
+    quantity: number | null,
+    description: string,
+    entryId: string
 }
 
 export const getAllCarBrands = async() => {
@@ -54,7 +55,7 @@ export const getAllCarModels = async() => {
     })
 }
 
-export const checkIdentification = async(identification: String) => {
+export const checkIdentification = async(identification: string) => {
     return new Promise((resolve, reject) => {
         db.get("SELECT * FROM clients WHERE id = ?", [identification], (err, res) => {
             if(err){
@@ -84,7 +85,7 @@ export const registerClient = async(data: newClient) => {
     })
 }
 
-export const checkCarPlate = async (plate: String) => {
+export const checkCarPlate = async (plate: string) => {
     return new Promise((resolve, reject) => {
             db.get("SELECT * FROM cars WHERE plates = ?", [plate], (err, res) => {
                 if(err){
@@ -94,6 +95,7 @@ export const checkCarPlate = async (plate: String) => {
                     if(res == undefined){
                         resolve(false)
                     }else{
+                        console.log(res)
                         resolve(res)
                     }
                 }
@@ -103,12 +105,22 @@ export const checkCarPlate = async (plate: String) => {
 
 export const registerCar = async(data: newCar) => {
     return new Promise((resolve, reject) => {
-        db.run("INSERT INTO cars(plates, brandId, modelId, year) VALUES(?, ?, ?, ?)", [{data}], (err, res) => {
+
+        const newId = idGenerator()
+        const plates = data.plates
+        const brandId = data.brandId
+        const modelId = data.modelId
+        const year = data.year
+
+        db.run("INSERT INTO cars(id, plates, brandId, modelId, year) VALUES(?, ?, ?, ?, ?)", [newId, plates, brandId, modelId, year], (err, res) => {
             if(err){
                 console.log(err)
                 reject(err)
             }else{
-                resolve(true)  //Hay que devolver el ID del carro porque se usara para registrar el ingreso
+                resolve({
+                    result: true,
+                    carId: newId
+                }) 
             }
         })
     })
@@ -116,7 +128,15 @@ export const registerCar = async(data: newCar) => {
 
 export const registerEntry = async(data: newEntry) => {
     return new Promise((resolve, reject) => {
-        db.run("INSERT INTO Cheking(carId, clientId, chekingDate, checkoutDate, entranceState)", [{data}], (err, res) => {
+
+        const newId = idGenerator()
+        const carId = data.carId
+        const clientId = data.clientId
+        const checkingDate = data.checkingDate
+        const checkoutDate = data.checkoutDate
+        const entranceState = data.entranceState
+
+        db.run("INSERT INTO Checkin(id, carId, clientId, checkinDate, checkoutDate, entranceState) VALUES(?, ?, ?, ?, ?, ?)", [newId, carId, clientId, checkingDate, checkoutDate, entranceState], (err, res) => {
             if(err){
                 console.log(err)
                 reject(err)

@@ -1,3 +1,4 @@
+import { message } from "antd"
 import { appContext } from "./appContext"
 import React from 'react'
 import { useState } from "react"
@@ -19,6 +20,7 @@ const ContextProvider: React.FC<contextProviderInterface> = ({children}) => {
 
     const [carBrandsList, setCarBrandsList] = useState<carBrand[]>([])
     const [carModelsList, setCarModelsList] = useState<carModel[]>([])
+    const [messageApi, contextHolder] = message.useMessage()
 
     return(
         <appContext.Provider
@@ -26,7 +28,9 @@ const ContextProvider: React.FC<contextProviderInterface> = ({children}) => {
                 carBrandsList,
                 setCarBrandsList,
                 carModelsList,
-                setCarModelsList
+                setCarModelsList,
+                messageApi,
+                contextHolder
             }}
         >
             {children}
