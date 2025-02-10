@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Button, Tooltip } from 'antd'
 import { PlusOutlined, FileTextOutlined, CheckOutlined } from '@ant-design/icons'
-import { AddEntry, CheckRegs, ConfirmCheckout } from '../components/Modals'
+import { AddReg, CheckRegs, ConfirmCheckout } from '../components/Modals'
 import { getOnList } from '../lib/functions'
 import { appContext } from '../context/appContext'
 
@@ -12,6 +12,7 @@ const Actives: React.FC = () => {
     const [addEntryModal, setAddEntryModal] = useState(false)
     const [checkRegsModal, setCheckRegsModal] = useState(false)
     const [confirmCheckoutModal, setConfirmCheckOutModal] = useState(false)
+    const [selectedActive, setSelectedActive] = useState<string>()
 
     const [showList, setShowList] = useState([])
 
@@ -59,7 +60,7 @@ const Actives: React.FC = () => {
                                     color='primary'
                                     icon={<PlusOutlined />}
                                     size='large'
-                                    onClick={() => setAddEntryModal(true)}
+                                    onClick={() => {setSelectedActive(item.id); setAddEntryModal(true)}}
                                 />
                             </Tooltip>
                         </div>
@@ -68,7 +69,7 @@ const Actives: React.FC = () => {
             </div>
 
             <ConfirmCheckout open={confirmCheckoutModal} onCancel={() => setConfirmCheckOutModal(false)}/>
-            <AddEntry open={addEntryModal} onCancel={() => setAddEntryModal(false)}/>
+            <AddReg open={addEntryModal} onCancel={() => setAddEntryModal(false)} carId={selectedActive}/>
             <CheckRegs open={checkRegsModal} onCancel={() => setCheckRegsModal(false)} CheckinId='hola'/>
 
         </>

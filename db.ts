@@ -15,7 +15,7 @@ export interface newCar{
     year: string 
 }
 
-export interface newEntry{
+export interface newCheckin{
     carId: string,
     clientId: string,
     checkingDate: Date,
@@ -29,7 +29,7 @@ export interface newReg{
     entryId: string
 }
 
-export const getAllCarBrands = async() => {
+export const getAllCarBrands = async() => {     //Devuelve la lista de todas las marcas de carros
     return new Promise((resolve, reject) => {
         db.all("SELECT * FROM carBrands", (err, list) => {
             if(err){
@@ -42,7 +42,7 @@ export const getAllCarBrands = async() => {
     })
 }
 
-export const getAllCarModels = async() => {
+export const getAllCarModels = async() => {     //Devuelve la lista de todos los modelos de carros
     return new Promise((resolve, reject) => {
         db.all("SELECT * FROM carModels", (err, list) => {
             if(err){
@@ -55,7 +55,7 @@ export const getAllCarModels = async() => {
     })
 }
 
-export const checkIdentification = async(identification: string) => {
+export const checkIdentification = async(identification: string) => {       //Revisa si un cliente esta registrado y devuelve su info
     return new Promise((resolve, reject) => {
         db.get("SELECT * FROM clients WHERE id = ?", [identification], (err, res) => {
             if(err){
@@ -72,7 +72,7 @@ export const checkIdentification = async(identification: string) => {
     })
 }
 
-export const registerClient = async(data: newClient) => {
+export const registerClient = async(data: newClient) => {       //Registra un cliente nuevo
     return new Promise((resolve, reject) => {
         db.run("INSERT INTO clients(id, name) VALUES(?, ?)", [data.id, data.name], (err, res) => {
             if(err){
@@ -85,7 +85,7 @@ export const registerClient = async(data: newClient) => {
     })
 }
 
-export const checkCarPlate = async (plate: string) => {
+export const checkCarPlate = async (plate: string) => {     //Revisa si un carro esta registrado y devuelve su info
     return new Promise((resolve, reject) => {
             db.get("SELECT * FROM cars WHERE plates = ?", [plate], (err, res) => {
                 if(err){
@@ -103,7 +103,7 @@ export const checkCarPlate = async (plate: string) => {
         })
 }
 
-export const registerCar = async(data: newCar) => {
+export const registerCar = async(data: newCar) => {     //registra la informacion de un carro nuevo
     return new Promise((resolve, reject) => {
 
         const newId = idGenerator()
@@ -126,7 +126,7 @@ export const registerCar = async(data: newCar) => {
     })
 }
 
-export const registerEntry = async(data: newEntry) => {
+export const registerCheckin = async(data: newCheckin) => {     //Registra el ingreso al taller de un carro registrado
     return new Promise((resolve, reject) => {
 
         const newId = idGenerator()
@@ -147,7 +147,7 @@ export const registerEntry = async(data: newEntry) => {
     })
 }
 
-export const getActiveCars = async() => {
+export const getActiveCars = async() => {       //Devuelve una lista de los carros ingreados al taller que aun no se hayan entregado
     return new Promise((resolve, reject) => {
         db.all(`SELECT * FROM Checkin INNER JOIN cars ON cars.id = Checkin.carId WHERE checkoutDate IS NULL`, (err, list) => {
             if(err){
@@ -160,14 +160,31 @@ export const getActiveCars = async() => {
     })
 }
 
-export const getEntries = async(entryId) => {
+export const getRegs = async(checkinId: string) => {   //Devuelve el historial de un carro durante in ingreso especifico al taller
     return new Promise((resolve, reject) => {
-        db.all("SELECT * FROM regs WHERE cheingId = ?", [entryId], (err, list) => {
+        db.all("SELECT * FROM regs WHERE cheingId = ?", [checkinId], (err, list) => {
             if(err){
                 console.log(err)
                 reject(err)
             }else{
                 resolve(list)
+            }
+        })
+    })
+}
+
+export const newReg = async(data: newReg) => {  //Agrega un registro al historial de un carro durante un ingreso especifico al taller
+    const id = idGenerator()
+    const checkinId = data.entryId
+    const quantity = data.quantity
+    const description = data.description
+    return new Promise((resolve, reject) => {
+        db.run("INSERT INTO regs(id, checkinId, quantity, description) VALUES(?, ?, ?, ?)", [id, checkinId, quantity, description], (err, res) => {
+            if(err){
+                console.log(err)
+                reject(err)
+            }else{
+                resolve(true)
             }
         })
     })

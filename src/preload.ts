@@ -1,41 +1,45 @@
 import { contextBridge } from "electron";
 import * as db from "../db"
-import { newClient, newCar, newEntry, newReg } from '../db.ts'
+import { newClient, newCar, newCheckin, newReg } from '../db.ts'
 
-async function getAllCarBrands(){
+async function getAllCarBrands(){       //Devuelve la lista de marcas de carros
     return await db.getAllCarBrands()
 }
 
-async function getAllCarModels(){
+async function getAllCarModels(){       //Devuelve la lista de modelos en general
     return await db.getAllCarModels()
 }
 
-async function checkIdentification(identification: string){
+async function checkIdentification(identification: string){     //Revisa si un cliente esta registrado y devuelve sus datos
     return await db.checkIdentification(identification)
 }
 
-async function registerClient(data: newClient){
+async function registerClient(data: newClient){     //Guarda la informacion de un cliente nuevo
     return await db.registerClient(data)
 }
 
-async function checkCarPlate(plate: string){
+async function checkCarPlate(plate: string){        //Revisa si un carro esta registrado y devuelve su informacion
     return await db.checkCarPlate(plate)   
 }
 
-async function registerCar(data: newCar){
+async function registerCar(data: newCar){       //Guarda la informacion de un carro nuevo
     return await db.registerCar(data)
 }
 
-async function registerEntry(data: newEntry){
-    return await db.registerEntry(data)
+async function registerCheckin(data: newCheckin){     //registra el ingreso al taller de un carro ya agregado
+    return await db.registerCheckin(data)
 }
 
-async function getActiveCars(){
+async function getActiveCars(){                 //Devuelve una lista de los carros ingresados al taller que no se han entregado
     return await db.getActiveCars()
 }
 
-async function getEntries(entryId: String){
-    return await db.getEntries(entryId)
+async function getRegs(checkinId: string){     //Devuelve el historial de un carro durante un ingreso especifico al taller
+    return await db.getRegs(checkinId)
+}
+
+async function newReg(data: newReg){                        //Agrega registros nuevos al historial de un carro durante un ingreso especifico al taller
+    return await db.newReg(data)
 }
 
 contextBridge.exposeInMainWorld("api", {
@@ -45,7 +49,8 @@ contextBridge.exposeInMainWorld("api", {
     registerClient: registerClient,
     checkCarPlate: checkCarPlate,
     registerCar: registerCar,
-    registerEntry: registerEntry,
+    registerCheckin: registerCheckin,
     getActiveCars: getActiveCars,
-    getEntries: getEntries
+    getRegs: getRegs,
+    newReg: newReg
 })

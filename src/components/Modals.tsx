@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Modal, Button, Input, Form, Select, DatePicker, InputNumber } from "antd";
+import { Modal, Button, Input, Form, Select, DatePicker, InputNumber, message } from "antd";
 import type { DatePickerProps } from 'antd';
 import { appContext } from '../context/appContext'
 import { carModel, carBrand } from '../context/ContextProvider'
-import { newEntry } from 'db';
+import { newCheckin, newReg } from 'db';
 
 declare global {
     interface Window {
@@ -21,6 +21,12 @@ interface CheckRegsProps {
     open: boolean,
     onCancel: () => void,
     CheckinId: string
+}
+
+interface AddRegProps{
+    open: boolean,
+    onCancel: () => void,
+    carId: string
 }
 
 export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
@@ -71,7 +77,7 @@ export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
         }
     }
 
-    const submitEntry = async() => {
+    const submitCheckin = async() => {
         let carResult
         const clientId = document.getElementById("idInput").value
         const clientName = document.getElementById("nameInput").value
@@ -98,7 +104,7 @@ export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
             carResult = await window.api.registerCar(data)
         }
 
-        const data: newEntry = {
+        const data: newCheckin = {
             carId: foundCarId || carResult.carId,
             clientId: clientId,
             checkingDate: currentDate,
@@ -106,8 +112,8 @@ export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
             entranceState: aditionalNotes
         }
         console.log(carResult)
-        const asignedEntry = await window.api.registerEntry(data)
-        if(asignedEntry == true){
+        const asignedCHeckin = await window.api.registerCheckin(data)
+        if(asignedCHeckin == true){
             onCancel()
             messageApi.open({
                 type: 'success',
@@ -129,7 +135,7 @@ export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
             open={open}
             footer={[
                 <Button variant='solid' color='danger' onClick={onCancel}>Cancelar</Button>,
-                <Button variant='solid' color='primary' onClick={submitEntry}>Ingresar al taller</Button>
+                <Button variant='solid' color='primary' onClick={submitCheckin}>Ingresar al taller</Button>
             ]}
         >
             <Form>
@@ -180,7 +186,35 @@ export const ConfirmCheckout: React.FC<GenericModalProps> = ({open, onCancel}) =
     )
 }
 
-export const AddEntry: React.FC<GenericModalProps> = ({open, onCancel}) => {
+export const AddReg: React.FC<AddRegProps> = ({open, onCancel, carId}) => {
+
+    const { messageApi } = useContext(appContext)
+
+    const submitNewReg = async() => {
+        const quantity = document.getElementById("quantityField").value
+        const description = document.getElementById("descriptionField").value
+
+        const data: newReg = {
+            quantity: quantity,
+            description: description,
+            entryId: carId
+        }
+
+        const res = await window.api.newReg(data)
+        if(res == true){
+            messageApi.open({
+                type: "success",
+                content: "Agregado con exito"
+            })
+            onCancel()
+        }else{
+            messageApi.open({
+                type: "error",
+                content: "ah ocurrido un error"
+            })
+        }
+    }
+
     return(
         <Modal
             title="Agregar entrada al registro"
@@ -188,15 +222,15 @@ export const AddEntry: React.FC<GenericModalProps> = ({open, onCancel}) => {
             onCancel={onCancel}
             footer={[
                 <Button variant='solid' color='danger' onClick={onCancel}>Cancelar</Button>,
-                <Button variant='solid' color='primary'>Aceptar</Button>
+                <Button variant='solid' color='primary' onClick={submitNewReg}>Aceptar</Button>
             ]}
         >
             <Form>
                 <Form.Item label="Cantidad (Opcional)">
-                    <InputNumber />
+                    <InputNumber id="quantityField"/>
                 </Form.Item>
                 <Form.Item label="Descripcion">
-                    <Input.TextArea autoSize={true} />
+                    <Input.TextArea autoSize={true} id="descriptionField"/>
                 </Form.Item>
             </Form>
         </Modal>
