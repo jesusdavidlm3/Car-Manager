@@ -20,13 +20,13 @@ interface GenericModalProps {
 interface CheckRegsProps {
     open: boolean,
     onCancel: () => void,
-    CheckinId: string
+    checkinId: string
 }
 
 interface AddRegProps{
     open: boolean,
     onCancel: () => void,
-    carId: string
+    checkinId: string
 }
 
 export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
@@ -186,7 +186,7 @@ export const ConfirmCheckout: React.FC<GenericModalProps> = ({open, onCancel}) =
     )
 }
 
-export const AddReg: React.FC<AddRegProps> = ({open, onCancel, carId}) => {
+export const AddReg: React.FC<AddRegProps> = ({open, onCancel, checkinId}) => {
 
     const { messageApi } = useContext(appContext)
 
@@ -197,7 +197,7 @@ export const AddReg: React.FC<AddRegProps> = ({open, onCancel, carId}) => {
         const data: newReg = {
             quantity: quantity,
             description: description,
-            entryId: carId
+            entryId: checkinId
         }
 
         const res = await window.api.newReg(data)
@@ -237,7 +237,17 @@ export const AddReg: React.FC<AddRegProps> = ({open, onCancel, carId}) => {
     )
 }
 
-export const CheckRegs: React.FC<CheckRegsProps> = ({open, onCancel, CheckinId}) => {
+export const CheckRegs: React.FC<CheckRegsProps> = ({open, onCancel, checkinId}) => {
+
+    useEffect(() => {
+        getInfo()
+    }, [])
+
+    const getInfo = async() => {
+        const res = await window.api.getRegs(checkinId)
+        console.log(res)
+    }
+
     return(
         <Modal
             title="Registros"

@@ -50,7 +50,7 @@ const Actives: React.FC = () => {
                                     color='primary'
                                     icon={<FileTextOutlined />}
                                     size='large'
-                                    onClick={() => setCheckRegsModal(true)}
+                                    onClick={() => {setSelectedActive(item.id); setCheckRegsModal(true)}}
                                 />
                             </Tooltip>
                             <Tooltip title="Agregar Registro">
@@ -69,8 +69,8 @@ const Actives: React.FC = () => {
             </div>
 
             <ConfirmCheckout open={confirmCheckoutModal} onCancel={() => setConfirmCheckOutModal(false)}/>
-            <AddReg open={addEntryModal} onCancel={() => setAddEntryModal(false)} carId={selectedActive}/>
-            <CheckRegs open={checkRegsModal} onCancel={() => setCheckRegsModal(false)} CheckinId='hola'/>
+            <AddReg open={addEntryModal} onCancel={() => setAddEntryModal(false)} checkinId={selectedActive}/>
+            <CheckRegs open={checkRegsModal} onCancel={() => setCheckRegsModal(false)} checkinId={selectedActive}/>
 
         </>
     )
