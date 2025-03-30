@@ -27,7 +27,7 @@ const createWindow = () => {
 
   
   mainWindow.webContents.openDevTools(); // Open the DevTools.
-  // mainWindow.setMenuBarVisibility(false);
+  mainWindow.setMenuBarVisibility(false);
   mainWindow.maximize();
   // mainWindow.setResizable(false);
   // mainWindow.setFullScreen(true);

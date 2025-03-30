@@ -3,7 +3,7 @@ import { Modal, Button, Input, Form, Select, DatePicker, InputNumber, message } 
 import type { DatePickerProps } from 'antd';
 import { appContext } from '../context/appContext'
 import { carModel, carBrand } from '../context/ContextProvider'
-import { newCheckin, newReg } from 'db';
+import { newCheckin, newReg } from 'db/db';
 
 declare global {
     interface Window {
@@ -193,13 +193,14 @@ export const AddReg: React.FC<AddRegProps> = ({open, onCancel, checkinId}) => {
     const submitNewReg = async() => {
         const quantity = document.getElementById("quantityField").value
         const description = document.getElementById("descriptionField").value
+        const currentDate = new Date()
 
         const data: newReg = {
             quantity: quantity,
             description: description,
-            entryId: checkinId
+            entryId: checkinId,
+            date: currentDate
         }
-
         const res = await window.api.newReg(data)
         if(res == true){
             messageApi.open({
@@ -217,6 +218,7 @@ export const AddReg: React.FC<AddRegProps> = ({open, onCancel, checkinId}) => {
 
     return(
         <Modal
+            destroyOnClose
             title="Agregar entrada al registro"
             open={open}
             onCancel={onCancel}
@@ -239,12 +241,15 @@ export const AddReg: React.FC<AddRegProps> = ({open, onCancel, checkinId}) => {
 
 export const CheckRegs: React.FC<CheckRegsProps> = ({open, onCancel, checkinId}) => {
 
+    const [results, setResults] = useState<object>([])
+
     useEffect(() => {
         getInfo()
-    }, [])
+    }, [open])
 
     const getInfo = async() => {
-        const res = await window.api.getRegs(checkinId)
+        const res: object = await window.api.getRegs(checkinId)
+        setResults(res)
         console.log(res)
     }
 
@@ -253,10 +258,26 @@ export const CheckRegs: React.FC<CheckRegsProps> = ({open, onCancel, checkinId})
             title="Registros"
             open={open}
             onCancel={onCancel}
+            width={700}
             footer={[
                 <Button variant='solid' color='primary' onClick={onCancel}>Cerrar</Button>
             ]}
         >
+            <div className='modalRegItemContainer'>
+            {results.map(item => {
+                const date = new Date(item.date)
+                console.log(date)
+                const toShow = date.toDateString()
+                
+                return(
+                    <div className="registerItemForModalRegs">
+                        <h3>Descripcion: {item.description}</h3>
+                        {item.quantity != "" && <h4>Cantidad: {item.quantity}</h4>}
+                        <h4>Fecha: {toShow}</h4>
+                    </div>
+                )
+            })}
+            </div>
         </Modal>    
     )
 }

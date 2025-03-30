@@ -29,9 +29,10 @@ const Actives: React.FC = () => {
     return(
         <>
             <div className='Actives'>
+                { showList.length == 0 && <h1 className='emptyMessage'>El taller esta vacio en este momento</h1> }
                 {showList.map(item => (
                     <div className='listItem' key={item.id}>
-                        <h3>{`${getOnList(carBrandsList, item.brandId)} ${getOnList(carModelsList, item.modelId)} ${item.year}`}</h3>
+                        <h3>{`${getOnList(carBrandsList, item.brandId)} ${getOnList(carModelsList, item.modelId)} ${item.year} Placa: ${item.plates}`}</h3>
                         <div className='Buttons'>
                             <Tooltip title="Retirar del taller">
                                 <Button

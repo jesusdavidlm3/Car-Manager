@@ -1,6 +1,7 @@
 :root{
     --bgColor: white;
-    --moduleColor: #b9baa3
+    --moduleColor: lightgray;
+    --moduleRadius: 10px;
 }
 
 body{
@@ -78,9 +79,14 @@ body{
     flex-direction: column;
     gap: 15px;
 
+    .emptyMessage{
+        align-self: center;
+        justify-self: center;
+    }
+
     .listItem{
         background-color: var(--moduleColor);
-        border-radius: 10px;
+        border-radius: var(--moduleRadius);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -92,5 +98,22 @@ body{
             flex-direction: row;
             gap: 5px;
         }
+    }
+}
+
+//Estilos para modulos de Ant
+
+.modalRegItemContainer{
+    height: 50vh;
+    overflow-y: scroll;
+
+    .registerItemForModalRegs{
+        border-radius: var(--moduleRadius);
+        padding: 10px;
+        background-color: var(--moduleColor);
+        margin: 5px 0px;
+    
+        h3{margin: 0 0 5px 0;}
+        h4{margin: 0;}
     }
 }
