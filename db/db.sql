@@ -41,6 +41,7 @@ CREATE TABLE regs (
   checkinId text NOT NULL,
   quantity integer,
   description text NOT NULL,
+  date datetime NOT NULL, 
   FOREIGN KEY (checkinId) REFERENCES Checkin (id)
 );
 

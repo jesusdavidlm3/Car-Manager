@@ -1,7 +1,9 @@
 import sqlite3 from "sqlite3";
 import { v4 as idGenerator } from "uuid";
+import * as queries from './queries'
 
-const db = new sqlite3.Database("db.db")
+const db = new sqlite3.Database("./db.db")
+db.exec(queries.creationQuery)
 
 export  interface newClient{
     id: string,
@@ -26,12 +28,13 @@ export interface newCheckin{
 export interface newReg{
     quantity: number | null,
     description: string,
-    entryId: string
+    entryId: string,
+    date: Date
 }
 
 export const getAllCarBrands = async() => {     //Devuelve la lista de todas las marcas de carros
     return new Promise((resolve, reject) => {
-        db.all("SELECT * FROM carBrands", (err, list) => {
+        db.all(queries.getAllCarBrands, (err, list) => {
             if(err){
                 console.log(err)
                 reject(err)
@@ -44,7 +47,7 @@ export const getAllCarBrands = async() => {     //Devuelve la lista de todas las
 
 export const getAllCarModels = async() => {     //Devuelve la lista de todos los modelos de carros
     return new Promise((resolve, reject) => {
-        db.all("SELECT * FROM carModels", (err, list) => {
+        db.all(queries.getAllCarModels, (err, list) => {
             if(err){
                 console.log(err)
                 reject(err)
@@ -57,7 +60,7 @@ export const getAllCarModels = async() => {     //Devuelve la lista de todos los
 
 export const checkIdentification = async(identification: string) => {       //Revisa si un cliente esta registrado y devuelve su info
     return new Promise((resolve, reject) => {
-        db.get("SELECT * FROM clients WHERE id = ?", [identification], (err, res) => {
+        db.get(queries.checkIdentification, [identification], (err, res) => {
             if(err){
                 console.log(err)
                 reject(err)
@@ -74,7 +77,7 @@ export const checkIdentification = async(identification: string) => {       //Re
 
 export const registerClient = async(data: newClient) => {       //Registra un cliente nuevo
     return new Promise((resolve, reject) => {
-        db.run("INSERT INTO clients(id, name) VALUES(?, ?)", [data.id, data.name], (err, res) => {
+        db.run(queries.registerClient, [data.id, data.name], (err, res) => {
             if(err){
                 console.log(err)
                 reject(err)
@@ -87,7 +90,7 @@ export const registerClient = async(data: newClient) => {       //Registra un cl
 
 export const checkCarPlate = async (plate: string) => {     //Revisa si un carro esta registrado y devuelve su info
     return new Promise((resolve, reject) => {
-            db.get("SELECT * FROM cars WHERE plates = ?", [plate], (err, res) => {
+            db.get(queries.checkCarPlate, [plate], (err, res) => {
                 if(err){
                     console.log(err)
                     reject(err)
@@ -112,7 +115,7 @@ export const registerCar = async(data: newCar) => {     //registra la informacio
         const modelId = data.modelId
         const year = data.year
 
-        db.run("INSERT INTO cars(id, plates, brandId, modelId, year) VALUES(?, ?, ?, ?, ?)", [newId, plates, brandId, modelId, year], (err, res) => {
+        db.run(queries.registerCar, [newId, plates, brandId, modelId, year], (err, res) => {
             if(err){
                 console.log(err)
                 reject(err)
@@ -136,7 +139,7 @@ export const registerCheckin = async(data: newCheckin) => {     //Registra el in
         const checkoutDate = data.checkoutDate
         const entranceState = data.entranceState
 
-        db.run("INSERT INTO Checkin(id, carId, clientId, checkinDate, checkoutDate, entranceState) VALUES(?, ?, ?, ?, ?, ?)", [newId, carId, clientId, checkingDate, checkoutDate, entranceState], (err, res) => {
+        db.run(queries.registerCheckin, [newId, carId, clientId, checkingDate, checkoutDate, entranceState], (err, res) => {
             if(err){
                 console.log(err)
                 reject(err)
@@ -149,7 +152,7 @@ export const registerCheckin = async(data: newCheckin) => {     //Registra el in
 
 export const getActiveCars = async() => {       //Devuelve una lista de los carros ingreados al taller que aun no se hayan entregado
     return new Promise((resolve, reject) => {
-        db.all(`SELECT * FROM Checkin INNER JOIN cars ON cars.id = Checkin.carId WHERE checkoutDate IS NULL`, (err, list) => {
+        db.all(queries.getActiveCars, (err, list) => {
             if(err){
                 console.log(err)
                 reject(err)
@@ -162,7 +165,7 @@ export const getActiveCars = async() => {       //Devuelve una lista de los carr
 
 export const getRegs = async(checkinId: string) => {   //Devuelve el historial de un carro durante in ingreso especifico al taller
     return new Promise((resolve, reject) => {
-        db.all("SELECT * FROM regs WHERE cheingId = ?", [checkinId], (err, list) => {
+        db.all(queries.getRegs, [checkinId], (err, list) => {
             if(err){
                 console.log(err)
                 reject(err)
@@ -178,8 +181,10 @@ export const newReg = async(data: newReg) => {  //Agrega un registro al historia
     const checkinId = data.entryId
     const quantity = data.quantity
     const description = data.description
+    const date = data.date
+    
     return new Promise((resolve, reject) => {
-        db.run("INSERT INTO regs(id, checkinId, quantity, description) VALUES(?, ?, ?, ?)", [id, checkinId, quantity, description], (err, res) => {
+        db.run(queries.newReg, [id, checkinId, quantity, description, date], (err, res) => {
             if(err){
                 console.log(err)
                 reject(err)

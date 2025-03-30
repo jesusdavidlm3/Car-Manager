@@ -1,6 +1,6 @@
 import { contextBridge } from "electron";
-import * as db from "../db"
-import { newClient, newCar, newCheckin, newReg } from '../db.ts'
+import * as db from "../db/db"
+import { newClient, newCar, newCheckin, newReg } from '../db/db'
 
 async function getAllCarBrands(){       //Devuelve la lista de marcas de carros
     return await db.getAllCarBrands()
