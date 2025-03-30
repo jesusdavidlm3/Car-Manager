@@ -49,6 +49,17 @@ export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
     const [disablePlate, setDisablePlate] = useState<boolean>(false)
     const [disableIdentification, setDisableIdentification] = useState<boolean>(false)
 
+    //control de actualizacion para pagina de activos
+    const {setUpdateActivesList} = useContext(appContext)
+
+    const closeModal = () => {
+        setCarFound(false)
+        setClientFound(false)
+        setDisableIdentification(false)
+        setDisablePlate(false)
+        onCancel()
+    }
+
     const filterModels = (e: number) => {
         setShowListModels( carModelsList.filter((item:carModel) => item.brand == e))
     }
@@ -114,7 +125,8 @@ export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
         console.log(carResult)
         const asignedCHeckin = await window.api.registerCheckin(data)
         if(asignedCHeckin == true){
-            onCancel()
+            setUpdateActivesList(1)
+            closeModal()
             messageApi.open({
                 type: 'success',
                 content: "Entrada registrada"
@@ -131,10 +143,10 @@ export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
         <Modal
             destroyOnClose
             title="Ingreso al taller"
-            onCancel={onCancel}
+            onCancel={closeModal}
             open={open}
             footer={[
-                <Button variant='solid' color='danger' onClick={onCancel}>Cancelar</Button>,
+                <Button variant='solid' color='danger' onClick={closeModal}>Cancelar</Button>,
                 <Button variant='solid' color='primary' onClick={submitCheckin}>Ingresar al taller</Button>
             ]}
         >
@@ -188,7 +200,7 @@ export const ConfirmCheckout: React.FC<GenericModalProps> = ({open, onCancel}) =
 
 export const AddReg: React.FC<AddRegProps> = ({open, onCancel, checkinId}) => {
 
-    const { messageApi } = useContext(appContext)
+    const { messageApi, setUpdateActivesList } = useContext(appContext)
 
     const submitNewReg = async() => {
         const quantity = document.getElementById("quantityField").value
@@ -207,6 +219,7 @@ export const AddReg: React.FC<AddRegProps> = ({open, onCancel, checkinId}) => {
                 type: "success",
                 content: "Agregado con exito"
             })
+            setUpdateActivesList(1)
             onCancel()
         }else{
             messageApi.open({

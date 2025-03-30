@@ -18,9 +18,15 @@ export interface carModel extends carBrand{
 
 const ContextProvider: React.FC<contextProviderInterface> = ({children}) => {
 
+    //Control de la UI
+    const [messageApi, contextHolder] = message.useMessage()
+
+    //Datos predeterminados
     const [carBrandsList, setCarBrandsList] = useState<carBrand[]>([])
     const [carModelsList, setCarModelsList] = useState<carModel[]>([])
-    const [messageApi, contextHolder] = message.useMessage()
+
+    //listeners
+    const [updateActivesList, setUpdateActivesList] = useState<number>(0)
 
     return(
         <appContext.Provider
@@ -30,7 +36,9 @@ const ContextProvider: React.FC<contextProviderInterface> = ({children}) => {
                 carModelsList,
                 setCarModelsList,
                 messageApi,
-                contextHolder
+                contextHolder,
+                updateActivesList,
+                setUpdateActivesList
             }}
         >
             {contextHolder}

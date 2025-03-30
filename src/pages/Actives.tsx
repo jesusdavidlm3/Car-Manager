@@ -7,7 +7,7 @@ import { appContext } from '../context/appContext'
 
 const Actives: React.FC = () => {
 
-    const { carBrandsList, carModelsList } = useContext(appContext)
+    const { carBrandsList, carModelsList, updateActivesList } = useContext(appContext)
 
     const [addEntryModal, setAddEntryModal] = useState(false)
     const [checkRegsModal, setCheckRegsModal] = useState(false)
@@ -18,7 +18,7 @@ const Actives: React.FC = () => {
 
     useEffect(() => {
         getActives()
-    }, [])
+    }, [updateActivesList])
 
     const getActives = async() => {
         const res = await window.api.getActiveCars()
