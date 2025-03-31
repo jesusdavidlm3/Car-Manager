@@ -1,6 +1,6 @@
 import { contextBridge } from "electron";
 import * as db from "../db/db"
-import { newClient, newCar, newCheckin, newReg } from '../db/db'
+import { newClient, newCar, newCheckin, newRegData } from '../db/db'
 
 async function getAllCarBrands(){       //Devuelve la lista de marcas de carros
     return await db.getAllCarBrands()
@@ -38,8 +38,15 @@ async function getRegs(checkinId: string){     //Devuelve el historial de un car
     return await db.getRegs(checkinId)
 }
 
-async function newReg(data: newReg){                        //Agrega registros nuevos al historial de un carro durante un ingreso especifico al taller
+async function newReg(data: newRegData){                        //Agrega registros nuevos al historial de un carro durante un ingreso especifico al taller
     return await db.newReg(data)
+}
+
+async function getAllCarChecks(plates:string) {
+    return await db.getAllCarChecks(plates)
+}
+async function checkout(checkId:string) {
+    return await db.checkout(checkId)
 }
 
 contextBridge.exposeInMainWorld("api", {
@@ -52,5 +59,7 @@ contextBridge.exposeInMainWorld("api", {
     registerCheckin: registerCheckin,
     getActiveCars: getActiveCars,
     getRegs: getRegs,
-    newReg: newReg
+    newReg: newReg,
+    getAllCarChecks: getAllCarChecks,
+    checkout: checkout
 })

@@ -17,15 +17,7 @@ interface GenericModalProps {
 }
 
 
-interface CheckRegsProps {
-    open: boolean,
-    onCancel: () => void,
-    checkinId: string
-}
-
-interface AddRegProps{
-    open: boolean,
-    onCancel: () => void,
+interface handleRegsProps extends GenericModalProps{
     checkinId: string
 }
 
@@ -183,7 +175,16 @@ export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
     )
 }
 
-export const ConfirmCheckout: React.FC<GenericModalProps> = ({open, onCancel}) => {
+export const ConfirmCheckout: React.FC<handleRegsProps> = ({open, onCancel, checkinId}) => {
+
+    const {setUpdateActivesList} = useContext(appContext)
+
+    const handleConfirm = async() => {
+        const res = await window.api.checkout(checkinId)
+        setUpdateActivesList(1)
+        onCancel()
+    }
+
     return(
         <Modal
             title='Confirmar retiro del taller?'
@@ -191,14 +192,14 @@ export const ConfirmCheckout: React.FC<GenericModalProps> = ({open, onCancel}) =
             onCancel={onCancel}
             footer={[
                 <Button variant='solid' color='danger' onClick={onCancel}>Cancelar</Button>,
-                <Button variant='solid' color='primary'>Confirmar</Button>
+                <Button variant='solid' color='primary' onClick={handleConfirm}>Confirmar</Button>
             ]}
         >
         </Modal>
     )
 }
 
-export const AddReg: React.FC<AddRegProps> = ({open, onCancel, checkinId}) => {
+export const AddReg: React.FC<handleRegsProps> = ({open, onCancel, checkinId}) => {
 
     const { messageApi, setUpdateActivesList } = useContext(appContext)
 
@@ -252,7 +253,7 @@ export const AddReg: React.FC<AddRegProps> = ({open, onCancel, checkinId}) => {
     )
 }
 
-export const CheckRegs: React.FC<CheckRegsProps> = ({open, onCancel, checkinId}) => {
+export const CheckRegs: React.FC<handleRegsProps> = ({open, onCancel, checkinId}) => {
 
     const [results, setResults] = useState<object>([])
 
@@ -279,7 +280,6 @@ export const CheckRegs: React.FC<CheckRegsProps> = ({open, onCancel, checkinId})
             <div className='modalRegItemContainer'>
             {results.map(item => {
                 const date = new Date(item.date)
-                console.log(date)
                 const toShow = date.toDateString()
                 
                 return(

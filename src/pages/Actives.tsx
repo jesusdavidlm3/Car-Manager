@@ -41,7 +41,7 @@ const Actives: React.FC = () => {
                                     color='primary'
                                     icon={<CheckOutlined />}
                                     size='large'
-                                    onClick={() => setConfirmCheckOutModal(true)}
+                                    onClick={() => {setConfirmCheckOutModal(true); setSelectedActive(item.checkinId)}}
                                 />
                             </Tooltip>
                             <Tooltip title="Revisar registro">
@@ -51,7 +51,7 @@ const Actives: React.FC = () => {
                                     color='primary'
                                     icon={<FileTextOutlined />}
                                     size='large'
-                                    onClick={() => {setSelectedActive(item.id); setCheckRegsModal(true)}}
+                                    onClick={() => {setSelectedActive(item.checkinId); setCheckRegsModal(true)}}
                                 />
                             </Tooltip>
                             <Tooltip title="Agregar Registro">
@@ -61,7 +61,7 @@ const Actives: React.FC = () => {
                                     color='primary'
                                     icon={<PlusOutlined />}
                                     size='large'
-                                    onClick={() => {setSelectedActive(item.id); setAddEntryModal(true)}}
+                                    onClick={() => {setSelectedActive(item.checkinId); setAddEntryModal(true)}}
                                 />
                             </Tooltip>
                         </div>
@@ -69,7 +69,7 @@ const Actives: React.FC = () => {
                 ))}
             </div>
 
-            <ConfirmCheckout open={confirmCheckoutModal} onCancel={() => setConfirmCheckOutModal(false)}/>
+            <ConfirmCheckout open={confirmCheckoutModal} onCancel={() => setConfirmCheckOutModal(false)} checkinId={selectedActive}/>
             <AddReg open={addEntryModal} onCancel={() => setAddEntryModal(false)} checkinId={selectedActive}/>
             <CheckRegs open={checkRegsModal} onCancel={() => setCheckRegsModal(false)} checkinId={selectedActive}/>
 

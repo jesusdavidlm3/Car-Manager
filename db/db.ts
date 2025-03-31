@@ -25,7 +25,7 @@ export interface newCheckin{
     entranceState: string
 }
 
-export interface newReg{
+export interface newRegData{
     quantity: number | null,
     description: string,
     entryId: string,
@@ -185,6 +185,34 @@ export const newReg = async(data: newReg) => {  //Agrega un registro al historia
     
     return new Promise((resolve, reject) => {
         db.run(queries.newReg, [id, checkinId, quantity, description, date], (err, res) => {
+            if(err){
+                console.log(err)
+                reject(err)
+            }else{
+                resolve(true)
+            }
+        })
+    })
+}
+
+export const getAllCarChecks = async(plates: string) => {
+    return new Promise((resolve, reject) => {
+        db.get(queries.getAllCarChecks, [plates], (err, res) => {
+            if(err){
+                console.log(err)
+                reject(err)
+            }else{
+                resolve(res)
+            }
+        })
+    })
+} 
+
+export const checkout = async(checkId: string) => {
+    const currentDate = new Date()
+    console.log(currentDate, checkId)
+    return new Promise((resolve, reject) => {
+        db.run(queries.checkout, [currentDate, checkId], (err) => {
             if(err){
                 console.log(err)
                 reject(err)
