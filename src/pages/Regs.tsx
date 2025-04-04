@@ -1,34 +1,34 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Input, Collapse } from 'antd';
 import type { CollapseProps } from 'antd';
 
+interface checkModel{
+    checkinDate: Date,
+    checkinId: string,
+    checkoutDate: Date,
+    entranceState: string
+}
+
 const Regs: React.FC = () => {
 
-    const handleSearch = async(e) => {
-        const res = await window.api.getAllCarChecks(e)
-        console.log(res)
-    }
+    const [items, setItems] = useState<CollapseProps['items']>([])
 
-    const items: CollapseProps['items'] = [{
-        key: '1',
-        label: 'Entrada - Salida',
-        children: 'Descripcion + cantidad'
-    },{
-        key: '2',
-        label: 'Entrada - Salida',
-        children: 'Descripcion + cantidad'
-    },{
-        key: '3',
-        label: 'Entrada - Salida',
-        children: 'Descripcion + cantidad'
-    }]
+    const handleSearch = async(e: string) => {
+        const res: checkModel[] = await window.api.getAllCarChecks(e)
+        const temp: CollapseProps['items'] = res.map(item => ({
+            key: item.checkinId,
+            label: `Ingreso: ${new Date(item.checkinDate).toLocaleString()} Retiro: ${new Date(item.checkoutDate).toLocaleString()}`,
+            Children: "hola"
+        }))
+        setItems(temp)
+    }
 
     return(
         <div className='Regs'>
             <Input.Search placeholder='Numero de placa' onSearch={e => handleSearch(e)}/>
 
             <div className='ListContainer'>
-                <Collapse items={items}/>
+                {items.length != 0 ? (<Collapse items={items}/>):(<h1>Ingrese un numero de placa</h1>)}
             </div>
         </div>    
     )

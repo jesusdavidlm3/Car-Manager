@@ -197,7 +197,7 @@ export const newReg = async(data: newReg) => {  //Agrega un registro al historia
 
 export const getAllCarChecks = async(plates: string) => {
     return new Promise((resolve, reject) => {
-        db.get(queries.getAllCarChecks, [plates], (err, res) => {
+        db.all(queries.getAllCarChecks, [plates], (err, res) => {
             if(err){
                 console.log(err)
                 reject(err)
