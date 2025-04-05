@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Modal, Button, Input, Form, Select, DatePicker, InputNumber, message } from "antd";
+import { Modal, Button, Input, Form, Select, DatePicker, InputNumber, List } from "antd";
 import type { DatePickerProps } from 'antd';
 import { appContext } from '../context/appContext'
 import { carModel, carBrand } from '../context/ContextProvider'
@@ -278,7 +278,25 @@ export const CheckRegs: React.FC<handleRegsProps> = ({open, onCancel, checkinId}
             ]}
         >
             <div className='modalRegItemContainer'>
+            <List bordered >
             {results.map(item => {
+                const date = new Date(item.date)
+                const toShow = date.toDateString()
+                
+                return(
+                    <List.Item>
+                        <List.Item.Meta 
+                            title={item.description}
+                            description={(<>
+                                {`Fecha: ${toShow}. `}
+                                {item.quantity != "" && `Cantidad: ${item.quantity}`}
+                            </>)}
+                        />
+                    </List.Item>
+                )
+            })}
+            </List>
+            {/* {results.map(item => {
                 const date = new Date(item.date)
                 const toShow = date.toDateString()
                 
@@ -289,7 +307,7 @@ export const CheckRegs: React.FC<handleRegsProps> = ({open, onCancel, checkinId}
                         <h4>Fecha: {toShow}</h4>
                     </div>
                 )
-            })}
+            })} */}
             </div>
         </Modal>    
     )
