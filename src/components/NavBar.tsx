@@ -11,10 +11,10 @@ const NavBar: React.FC = () => {
     return(
         <>
             <div className='NavBar'>
-                <Button variant='solid' color='primary' onClick={() => setNewCheckinModal(true)}>Registrar ingreso</Button>
-                <Button variant='solid' color='primary' onClick={() => setView('Actives')}>Activos</Button>
-                <Button variant='solid' color='primary' onClick={() => setView('Regs')}>Registros</Button>
-                <Button variant='solid' color='primary'>Administrar</Button>
+                <Button variant='outlined' color='default' onClick={() => setNewCheckinModal(true)}>Registrar ingreso</Button>
+                <Button variant='outlined' color='default' onClick={() => setView('Actives')}>Activos</Button>
+                <Button variant='outlined' color='default' onClick={() => setView('Regs')}>Registros</Button>
+                <Button variant='outlined' color='default'>Administrar</Button>
             </div>
 
             <NewCheckin open={newCheckinModal} onCancel={() => setNewCheckinModal(false)}/>
