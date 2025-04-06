@@ -17,13 +17,16 @@ export const getActiveCars: string = `
     FROM Checkin INNER JOIN cars ON cars.id = Checkin.carId WHERE checkoutDate IS NULL
 `
 
-export const registerCheckin: string = "INSERT INTO Checkin(id, carId, clientId, checkinDate, checkoutDate, entranceState) VALUES(?, ?, ?, ?, ?, ?)"
+export const registerCheckin: string = `
+    INSERT INTO Checkin(id, carId, clientId, checkinDate, checkoutDate, entranceState)
+    VALUES(?, ?, ?, ?, ?, ?)
+`
 
-export const registerCar: string = "INSERT INTO cars(id, plates, brandId, modelId, year) VALUES(?, ?, ?, ?, ?)"
+export const registerCar: string = "INSERT INTO cars(id, plates, brandId, modelId, year, color) VALUES(?, ?, ?, ?, ?, ?)"
 
 export const checkCarPlate: string = "SELECT * FROM cars WHERE plates = ?" 
 
-export const registerClient: string = "INSERT INTO clients(id, name) VALUES(?, ?)"
+export const registerClient: string = "INSERT INTO clients(id, name, phone, address) VALUES(?, ?, ?, ?)"
 
 export const checkIdentification: string = "SELECT * FROM clients WHERE id = ?"
 
@@ -51,6 +54,7 @@ CREATE TABLE IF NOT EXISTS cars (
     brandId integer NOT NULL,
     modelId integer NOT NULL,
     year text NOT NULL,
+    color text NOT NULL,
     FOREIGN KEY (brandId) REFERENCES carBrands (id),
     FOREIGN KEY (modelId) REFERENCES carModels (id)
 );
@@ -69,7 +73,9 @@ CREATE TABLE IF NOT EXISTS carModels (
 
 CREATE TABLE IF NOT EXISTS clients (
     id text NOT NULL PRIMARY KEY,
-    name text NOT NULL
+    name text NOT NULL,
+    phone text NOT NULL,
+    address text NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS checkin (

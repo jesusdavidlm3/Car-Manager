@@ -7,14 +7,18 @@ db.exec(queries.creationQuery)
 
 export  interface newClient{
     id: string,
-    name: string
+    name: string,
+    phone: string,
+    address: string
 }
 
 export interface newCar{
+    id: string,
     plates: string,
     brandId: number,
     modelId: number,
-    year: string 
+    year: string ,
+    color: string
 }
 
 export interface newCheckin{
@@ -77,7 +81,7 @@ export const checkIdentification = async(identification: string) => {       //Re
 
 export const registerClient = async(data: newClient) => {       //Registra un cliente nuevo
     return new Promise((resolve, reject) => {
-        db.run(queries.registerClient, [data.id, data.name], (err, res) => {
+        db.run(queries.registerClient, [data.id, data.name, data.phone, data.address], (err, res) => {
             if(err){
                 console.log(err)
                 reject(err)
@@ -114,8 +118,9 @@ export const registerCar = async(data: newCar) => {     //registra la informacio
         const brandId = data.brandId
         const modelId = data.modelId
         const year = data.year
+        const color = data.color
 
-        db.run(queries.registerCar, [newId, plates, brandId, modelId, year], (err, res) => {
+        db.run(queries.registerCar, [newId, plates, brandId, modelId, year, color], (err, res) => {
             if(err){
                 console.log(err)
                 reject(err)
@@ -176,7 +181,7 @@ export const getRegs = async(checkinId: string) => {   //Devuelve el historial d
     })
 }
 
-export const newReg = async(data: newReg) => {  //Agrega un registro al historial de un carro durante un ingreso especifico al taller
+export const newReg = async(data: newRegData) => {  //Agrega un registro al historial de un carro durante un ingreso especifico al taller
     const id = idGenerator()
     const checkinId = data.entryId
     const quantity = data.quantity

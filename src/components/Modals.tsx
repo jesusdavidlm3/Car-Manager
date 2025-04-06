@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Modal, Button, Input, Form, Select, DatePicker, InputNumber, List } from "antd";
+import { Modal, Button, Input, Form, Select, DatePicker, InputNumber, List, Space } from "antd";
 import type { DatePickerProps } from 'antd';
 import { appContext } from '../context/appContext'
 import { carModel, carBrand } from '../context/ContextProvider'
-import { newCheckin, newReg } from 'db/db';
+import { newCheckin, newCar, newClient } from 'db/db';
 
 declare global {
     interface Window {
@@ -21,19 +21,38 @@ interface handleRegsProps extends GenericModalProps{
     checkinId: string
 }
 
+// interface car{
+//     id: string,
+//     plates: string,
+//     brandId: number,
+//     modelId: number,
+//     year: string,
+//     color: string
+// }
+
+// interface client{
+//     id: string,
+//     name: string,
+//     phone: string,
+//     address: string
+// }
+
 export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
     //Control de las listas mostradas en selectores
     const { carBrandsList, carModelsList, messageApi } = useContext(appContext)
     const [showListModels, setShowListModels] = useState([])
     
     //Datos captados para ser enviados
-    const [carPlate, setCarPlate] = useState<string>()
+    // const [carPlate, setCarPlate] = useState<string>()
     const [selectedBrand, setSelectedBrand] = useState<number>()
     const [selectedModel, setSelectedModel] = useState<number>()
     const [selectedYear, setSelectedYear] = useState<string>()
-    const [clientIdentification, setClientIdentification] = useState<string>()
+    // const [clientIdentification, setClientIdentification] = useState<string>()
     const [clientName, setClientName] = useState<string>()
+    const [clientPhone, setClientPhone] = useState<string>()
+    const [clientAddress, setClientAddress] = useState<string>()
     const [foundCarId, setFoundCarId] = useState<string>(null)
+    const [carColor, setCarColor] = useState<string>()
 
     //Control de carros y clientes ya registrados
     const [carFound, setCarFound] = useState<boolean>(false)
@@ -57,12 +76,13 @@ export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
     }
 
     const checkPlate = async(e: string) => {
-        const res = await window.api.checkCarPlate(e)
+        const res: car | false = await window.api.checkCarPlate(e)
         if(res != false){
             setDisablePlate(true)
             setCarFound(true)
             setSelectedBrand(res.brandId)
             setSelectedModel(res.modelId)
+            setCarColor(res.color)
             setFoundCarId(res.id)
         }else{
             setDisablePlate(true)
@@ -70,11 +90,13 @@ export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
     } 
 
     const checkId = async(e: string) => {
-        const res = await window.api.checkIdentification(e)
+        const res: client | false = await window.api.checkIdentification(e)
         if(res != false){
             setDisableIdentification(true)
             setClientFound(true)
             setClientName(res.name)
+            setClientPhone(res.phone)
+            setClientAddress(res.address)
         }else{
             setDisableIdentification(true)
         }
@@ -84,25 +106,31 @@ export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
         let carResult
         const clientId = document.getElementById("idInput").value
         const clientName = document.getElementById("nameInput").value
+        const clientPhone = document.getElementById("phoneInput").value
+        const clientAddress = document.getElementById("addressInput").value
         const aditionalNotes = document.getElementById("aditionalNotes").value
         const currentDate = new Date()
 
         if(clientFound == false){
-            const data = {
+            const data: newClient = {
                 id: clientId,
-                name: clientName
+                name: clientName,
+                address: clientAddress,
+                phone: clientPhone
             }
             window.api.registerClient(data)
         }
 
         if(carFound == false){
             const plates = document.getElementById("plateInput").value
+            const carColor = document.getElementById("carColor").value
 
-            const data = {
+            const data: Omit<newCar, "id"> = {
                 plates: plates,
                 brandId: selectedBrand,
                 modelId: selectedModel,
-                year: selectedYear
+                year: selectedYear,
+                color: carColor,
             }
             carResult = await window.api.registerCar(data)
         }
@@ -154,9 +182,14 @@ export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
                         <Form.Item label="Modelo">
                             <Select value={selectedModel} options={showListModels} disabled={carFound} onChange={(e) => setSelectedModel(e)}/>
                         </Form.Item>
-                        <Form.Item label='Año'>
-                            <DatePicker picker='year' disabled={carFound} onChange={(e) => setSelectedYear(`${e.$y}`)}/>
-                        </Form.Item>
+                        <Space align='center'>
+                            <Form.Item label='Año'>
+                                <DatePicker picker='year' disabled={carFound} onChange={(e) => setSelectedYear(`${e.$y}`)}/>
+                            </Form.Item>
+                            <Form.Item label="Color">
+                                <Input value={carColor} id='carColor' disabled={carFound}/>
+                            </Form.Item>
+                        </Space>
                         <Form.Item>
                             <Input.TextArea id="aditionalNotes" placeholder='Notas Adicionales' autoSize={true}/>
                         </Form.Item>
@@ -165,11 +198,17 @@ export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
                 <Form.Item label="Cedula del cliente">
                     <Input.Search id='idInput' disabled={disableIdentification} onSearch={checkId}/>
                 </Form.Item>
-                { disableIdentification && (
+                { disableIdentification && (<>
                     <Form.Item label="Nombre del cliente">
                         <Input value={clientName} id='nameInput' disabled={clientFound}/>
                     </Form.Item>
-                ) }
+                    <Form.Item label="Telefono">
+                        <Input value={clientPhone} id='phoneInput' disabled={clientFound}/>
+                    </Form.Item>
+                    <Form.Item label="Direccion">
+                        <Input value={clientAddress} id='addressInput' disabled={clientFound}/>
+                    </Form.Item>
+                </>)}
             </Form>
         </Modal>
     )
