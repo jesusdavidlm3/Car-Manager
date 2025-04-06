@@ -11,7 +11,8 @@ interface checkModel{
 
 interface listItem{
     id: string,
-    title: string
+    title: string,
+    entrance: string
 }
 
 const Regs: React.FC = () => {
@@ -19,12 +20,14 @@ const Regs: React.FC = () => {
     const [items, setItems] = useState<listItem[]>([])
     const [regModal, setRegModal] = useState<boolean>(false)
     const [selectedCheck, setSelectedCheck] = useState<string>("")
+    const [selectedEntrance, setSelectedEntrance] = useState<string>()
 
     const handleSearch = async(e: string) => {
         const res: checkModel[] = await window.api.getAllCarChecks(e)
         const temp: listItem[] = res.map(item => ({
             id: item.checkinId,
             title: `Ingreso: ${new Date(item.checkinDate).toLocaleString()} Retiro: ${new Date(item.checkoutDate).toLocaleString()}`,
+            entrance: item.entranceState
         }))
         setItems(temp)
     }
@@ -40,8 +43,11 @@ const Regs: React.FC = () => {
                         
                     >
                         {items.map(item => (
-                            <List.Item onClick={() => {setRegModal(true); setSelectedCheck(item.id)}}>
+                            <List.Item onClick={() => {
+                                setRegModal(true); setSelectedCheck(item.id); setSelectedEntrance(item.entrance)
+                            }}>
                                 <List.Item.Meta
+                                    className='checksListItem'
                                     title={item.title}
                                 />
                             </List.Item>
@@ -53,6 +59,7 @@ const Regs: React.FC = () => {
                 checkinId={selectedCheck}
                 open={regModal}
                 onCancel={() => setRegModal(false)}
+                entrance={selectedEntrance}
             />
         </div>    
     )

@@ -5,6 +5,20 @@ import { AddReg, CheckRegs, ConfirmCheckout } from '../components/Modals'
 import { getOnList } from '../lib/functions'
 import { appContext } from '../context/appContext'
 
+interface activeCar{
+    carId: string,
+    brandId: number,
+    modelId: number,
+    entranceState: string,
+    checkinId: string,
+    checkinDate: Date,
+    checkoutDate: Date,
+    clientId: string,
+    year: string,
+    plates: string,
+    color: string
+}
+
 const Actives: React.FC = () => {
 
     const { carBrandsList, carModelsList, updateActivesList } = useContext(appContext)
@@ -13,8 +27,9 @@ const Actives: React.FC = () => {
     const [checkRegsModal, setCheckRegsModal] = useState(false)
     const [confirmCheckoutModal, setConfirmCheckOutModal] = useState(false)
     const [selectedActive, setSelectedActive] = useState<string>()
+    const [entranceActive, setEntranceActive] = useState<string>()
 
-    const [showList, setShowList] = useState([])
+    const [showList, setShowList] = useState<activeCar[]>([])
 
     useEffect(() => {
         getActives()
@@ -51,7 +66,7 @@ const Actives: React.FC = () => {
                                     color='primary'
                                     icon={<FileTextOutlined />}
                                     size='large'
-                                    onClick={() => {setSelectedActive(item.checkinId); setCheckRegsModal(true)}}
+                                    onClick={() => {setSelectedActive(item.checkinId); setCheckRegsModal(true); setEntranceActive(item.entranceState)}}
                                 />
                             </Tooltip>
                             <Tooltip title="Agregar Registro">
@@ -71,7 +86,7 @@ const Actives: React.FC = () => {
 
             <ConfirmCheckout open={confirmCheckoutModal} onCancel={() => setConfirmCheckOutModal(false)} checkinId={selectedActive}/>
             <AddReg open={addEntryModal} onCancel={() => setAddEntryModal(false)} checkinId={selectedActive}/>
-            <CheckRegs open={checkRegsModal} onCancel={() => setCheckRegsModal(false)} checkinId={selectedActive}/>
+            <CheckRegs open={checkRegsModal} onCancel={() => setCheckRegsModal(false)} checkinId={selectedActive} entrance={entranceActive}/>
 
         </>
     )

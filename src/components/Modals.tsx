@@ -18,24 +18,9 @@ interface GenericModalProps {
 
 
 interface handleRegsProps extends GenericModalProps{
-    checkinId: string
+    checkinId: string,
+    entrance?: string
 }
-
-// interface car{
-//     id: string,
-//     plates: string,
-//     brandId: number,
-//     modelId: number,
-//     year: string,
-//     color: string
-// }
-
-// interface client{
-//     id: string,
-//     name: string,
-//     phone: string,
-//     address: string
-// }
 
 export const NewCheckin: React.FC<GenericModalProps> = ({open, onCancel}) => {
     //Control de las listas mostradas en selectores
@@ -292,7 +277,7 @@ export const AddReg: React.FC<handleRegsProps> = ({open, onCancel, checkinId}) =
     )
 }
 
-export const CheckRegs: React.FC<handleRegsProps> = ({open, onCancel, checkinId}) => {
+export const CheckRegs: React.FC<handleRegsProps> = ({open, onCancel, checkinId, entrance}) => {
 
     const [results, setResults] = useState<object>([])
 
@@ -317,6 +302,7 @@ export const CheckRegs: React.FC<handleRegsProps> = ({open, onCancel, checkinId}
             ]}
         >
             <div className='modalRegItemContainer'>
+            {entrance && (<h4>Estado de entrada: {entrance}</h4>)}
             <List bordered >
             {results.map(item => {
                 const date = new Date(item.date)
@@ -335,18 +321,6 @@ export const CheckRegs: React.FC<handleRegsProps> = ({open, onCancel, checkinId}
                 )
             })}
             </List>
-            {/* {results.map(item => {
-                const date = new Date(item.date)
-                const toShow = date.toDateString()
-                
-                return(
-                    <div className="registerItemForModalRegs">
-                        <h3>Descripcion: {item.description}</h3>
-                        {item.quantity != "" && <h4>Cantidad: {item.quantity}</h4>}
-                        <h4>Fecha: {toShow}</h4>
-                    </div>
-                )
-            })} */}
             </div>
         </Modal>    
     )

@@ -13,7 +13,8 @@ export const getActiveCars: string = `
         checkin.checkoutDate,
         checkin.clientId,
         cars.year,
-        cars.plates
+        cars.plates,
+        cars.color
     FROM Checkin INNER JOIN cars ON cars.id = Checkin.carId WHERE checkoutDate IS NULL
 `
 
